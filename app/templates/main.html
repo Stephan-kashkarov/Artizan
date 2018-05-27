@@ -1,0 +1,28 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+SongBook
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-dark bg-primary sticky-top">
+	<a class='navbar-brand' href='{{ url_for("welcome") }}'>
+		Songbook
+	</a>
+	<div class='collapse navbar-collapse'>
+		<ul class="navbar-nav mr-auto">
+			<li class='nav-item'>
+				<a class="" href="{{ url_for('home') }}">Home</a>
+			</li>
+		</ul>
+	</div>
+</nav>
+{% endblock %}
+
+{% block content %}
+{% block main %}
+{% endblock %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
