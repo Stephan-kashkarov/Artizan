@@ -1,5 +1,21 @@
 {% extends 'main.html' %}
 
 {% block main %}
+<h1>Welcome</h1>
+<div class="row">
+	<div class="col">
+		<h3>Login</h3>
+		<p>Sign in to experience all the features of <b>Songbook</b></p>
+		<button type="button" class="btn btn-primary sign-in">Sign In!</button>
+	</div>
+	<div class="col">
+		<h3>Register<h3>
+		<p>If you dont already have an account but still want the full experience Register! Its free!</p>
+		<button type="button" class="btn btn-primary register">Regester!</button>
+	</div>
+</div>
+{% endblock %}
 
+{% block localScripts %}
+<script src="{{url_for('.static', filename='js/index.js')}}"></script>
 {% endblock %}

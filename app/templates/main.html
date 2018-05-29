@@ -1,43 +1,16 @@
 {% extends 'bootstrap/base.html' %}
 
-{% block title %}
-SongBook
-{% endblock %}
-
-{% block navbar %}
-<nav class="navbar navbar-dark bg-primary sticky-top">
-	<a class='navbar-brand' href='{{ url_for("welcome") }}'>
-		Songbook
-	</a>
-	<ul class="navbar-nav mr-auto">
-		<li class='nav-item'>
-			<a class="nav-link" href="{{ url_for('home') }}">Home</a>
-		</li>
-		<li class='nav-item'>
-			<a class="nav-link" href="{{ url_for('browse') }}">Browse</a>
-		</li>
-		<li class='nav-item'>
-			<a class="nav-link" href="{{ url_for('about') }}">About</a>
-		</li>
-	</ul>
-	<div class='collapse navbar-collapse'>
-		<a class="nav-link" href="{{ url_for('login') }}">
-			Login
-		</a>
-		<a class="nav-link" href="{{ url_for('logout') }}">
-			Logout
-		</a>
-		<a class="nav-link" href="{{ url_for('register') }}">
-			Register
-		</a>
-	</div>
-</nav>
+{% block header %}
 {% endblock %}
 
 {% block content %}
-{% block main %}
-{% endblock %}
+<div class="content">
+    {% block main %}
+    {% endblock %}
+</div>
 {% endblock %}
 
-{% block footer %}
+{% block scripts %}
+    {% block localScripts %}
+    {% endblock %}
 {% endblock %}

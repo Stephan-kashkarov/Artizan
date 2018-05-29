@@ -1,4 +1,4 @@
-from app import app
+ifrom app import app
 from flask import render_template, redirect, url_for
 from flask_login import current_user, login_user, login_required
 from app.models import Person
@@ -6,7 +6,7 @@ from app.models import Person
 
 @app.route("/")
 def welcome():
-	return render_template('main.html')
+	return render_template('index.html')
 
 
 @app.route('/login')
