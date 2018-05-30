@@ -1,8 +1,8 @@
-from app import app
+from app import app, db
 from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, login_required, logout_user
 from app.models import Person
-from app.forms import login_form, regist_form
+from app.forms import login_form, regist_form, profile_form
 
 
 @app.route("/")
@@ -45,13 +45,36 @@ def logout():
 	return redirect(url_for('welcome'))
 
 
+@app.route('/user/<username>')
+def profile(username):
+	user = Person.query.filter_by(username=username)
+	return render_template('profile.html', user=user)
+
+
+@app.route('/user/<username>/edit')
+@login_required
+def edit_profile(username):
+	user = Person.query.filter_by(usernmae=username)
+	form = profile_form()
+	if current_user != user:
+		flash("you cannot edit other users profiles")
+		return redirect(url_for('home'))
+	else:
+		if form.validate_on_submit():
+			current_user.email = form.email.data
+			current_user.bio = form.bio.data
+			db.session.add(current_user)
+			db.session.commit()
+			return redirect(url_for('profile', username=current_user.username))
+		return render_template('edit_profile.html', user=current_user, form=form)
+
+
 @app.route('/home')
 def home():
-	return "home"
+	return render_template('home.html')
 
 
 @app.route('/browse')
-@login_required
 def browse():
 	return "browse"
 

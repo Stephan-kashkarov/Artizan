@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtfroms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import Person
 
@@ -13,7 +13,7 @@ class login_form(FlaskForm):
 
 class regist_form(FlaskForm):
 	username = StringField('Choose a Username:', validators=[DataRequired()])
-	email = StrindField('Enter an Email:', validators=[DataRequired(), Email()])
+	email = StringField('Enter an Email:', validators=[DataRequired(), Email()])
 	pass1 = PasswordField('Password:', validators=[DataRequired()])
 	pass2 = PasswordField('Re-type Password:', validators=[
 		DataRequired(), EqualTo('pass1')
@@ -29,3 +29,9 @@ class regist_form(FlaskForm):
 		user = Person.query.filter_by(email=email.data).first()
 		if user is not None:
 			raise ValidationError('Email already taken')
+
+
+class profile_form(FlaskForm):
+	password = PasswordField('Password:', validators=[DataRequired()])
+	email = StringField('Change email:', validators=[Email()])
+	bio = StringField('Edit Bio:')
