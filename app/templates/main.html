@@ -1,6 +1,6 @@
 {% extends 'bootstrap/base.html' %}
 
-{% block header %}
+{% block navbar %}
 <nav class="navbar navbar-default" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -31,10 +31,10 @@
             {% if current_user.is_anonymous %}
             <li><a href="#">Login</a></li>
             <li><a href="#">Regester</a></li>
-            {% eles %}
+            {% else %}
             <li><a href="#">{{ current_user.username }}</a></li>
             <li><a href="#">Logout</a></li>
-
+            {% endif %}
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -42,7 +42,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="content">
+    <div class="container">
         {% block main %}
         {% endblock %}
     </div>
