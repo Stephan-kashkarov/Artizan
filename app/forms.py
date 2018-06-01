@@ -7,8 +7,7 @@ from app.models import Person
 class login_form(FlaskForm):
 	username = StringField('Username:', validators=[DataRequired()])
 	password = PasswordField('Password:', validators=[DataRequired()])
-	remember_me = BooleanField('Remember Me:')
-	submit = SubmitField('Sign In')
+	remember_me = BooleanField('Remember Me')
 
 
 class regist_form(FlaskForm):
@@ -18,7 +17,6 @@ class regist_form(FlaskForm):
 	pass2 = PasswordField('Re-type Password:', validators=[
 		DataRequired(), EqualTo('pass1')
 	])
-	submit = SubmitField('Register!')
 
 	def validate_username(self, username):
 		user = Person.query.filter_by(username=username.data).first()

@@ -10,7 +10,7 @@ def welcome():
 	if current_user.is_anonymous:
 		return render_template('index.html')
 	else:
-		return redirect(url_for('home'))
+		return redirect(url_for('browse'))
 
 
 @app.route('/login', methods=["POST", "GET"])
@@ -20,7 +20,7 @@ def login():
 		person = Person.query.filter_by(username=form.username.data).first()
 		if person and person.check_password(form.password.data):
 			login_user(person, remember=form.remember_me.data)
-			return redirect(url_for('home'))
+			return redirect(url_for('browse'))
 		else:
 			flash("invalid username or password")
 			return redirect(url_for('login'))
@@ -61,7 +61,7 @@ def edit_profile(username):
 	form = profile_form()
 	if current_user != user:
 		flash("you cannot edit other users profiles")
-		return redirect(url_for('home'))
+		return redirect(url_for('browse'))
 	else:
 		if form.validate_on_submit():
 			current_user.email = form.email.data
@@ -70,11 +70,6 @@ def edit_profile(username):
 			db.session.commit()
 			return redirect(url_for('profile', username=current_user.username))
 		return render_template('edit_profile.html', user=current_user, form=form)
-
-
-@app.route('/home')
-def home():
-	return render_template('home.html')
 
 
 @app.route('/browse')
