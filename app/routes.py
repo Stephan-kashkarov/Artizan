@@ -7,14 +7,17 @@ from app.forms import login_form, regist_form, profile_form
 
 @app.route("/")
 def welcome():
-	return render_template('index.html')
+	if current_user.is_anonymous:
+		return render_template('index.html')
+	else:
+		return redirect(url_for('home'))
 
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
 	form = login_form()
 	if form.validate_on_submit():
-		person = Person.query.filter_by(username=form.username.data)
+		person = Person.query.filter_by(username=form.username.data).first()
 		if person and person.check_password(form.password.data):
 			login_user(person, remember=form.remember_me.data)
 			return redirect(url_for('home'))
@@ -47,14 +50,14 @@ def logout():
 
 @app.route('/user/<username>')
 def profile(username):
-	user = Person.query.filter_by(username=username)
+	user = Person.query.filter_by(username=username).first()
 	return render_template('profile.html', user=user)
 
 
 @app.route('/user/<username>/edit')
 @login_required
 def edit_profile(username):
-	user = Person.query.filter_by(usernmae=username)
+	user = Person.query.filter_by(usernmae=username).first()
 	form = profile_form()
 	if current_user != user:
 		flash("you cannot edit other users profiles")
