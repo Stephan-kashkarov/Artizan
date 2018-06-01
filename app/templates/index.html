@@ -1,23 +1,25 @@
 {% extends 'main.html' %}
 
 {% block main %}
-<h1>Welcome</h1>
+<h1 class="title">Welcome</h1>
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">Login</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <p class="card-text">To get the full experience of Songbook you need to login. Some of the features that are avalible:</p>
+    <a href="#" class="btn btn-primary">Login!</a>
   </div>
 </div>
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">Regester</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <p class="card-text">If you do not already have an account you can easly make one and its completely free!</p>
+    <a href="#" class="btn btn-primary">Regester!</a>
   </div>
 </div>
 {% endblock %}
 
+{% block lstyles %}
+<link rel="stylesheet" href="{{url_for('.static', filename='css/index.css')}}">
+{% endblock %}
 {% block localScripts %}
-<script src="{{url_for('.static', filename='js/index.js')}}"></script>
 {% endblock %}

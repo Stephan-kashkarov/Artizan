@@ -1,0 +1,11 @@
+.card{
+    width: 18rem;
+    min-width:49%;
+    display:inline-flex;
+}
+
+.title {
+    padding: 100px;
+    text-align: center;
+}
+/* such my dick */

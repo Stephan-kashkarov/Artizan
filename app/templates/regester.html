@@ -18,7 +18,7 @@
         <span style="color: red;">[{{ error }}]</span> {% endfor %}
     </p>
     <p>
-        {{ form.pass2.label }}<br> {{ form.pass2(size=32) }}<br> {% for error in form.password2.errors %}
+        {{ form.pass2.label }}<br> {{ form.pass2(size=32) }}<br> {% for error in form.pass2.errors %}
         <span style="color: red;">[{{ error }}]</span> {% endfor %}
     </p>
     <p>{{ form.submit() }}</p>
