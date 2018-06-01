@@ -74,9 +74,9 @@ def edit_profile(username):
 
 @app.route('/browse')
 def browse():
-	return "browse"
+	return render_template('browse.html')
 
 
 @app.route('/about')
 def about():
-	return "about"
+	return render_template('about.html')
