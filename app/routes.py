@@ -4,6 +4,7 @@ from app.forms import login_form, regist_form, profile_form
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, login_required, logout_user
 from json import loads
+from random import randint
 
 
 @app.route("/")
@@ -75,7 +76,29 @@ def edit_profile(username):
 
 @app.route('/browse')
 def browse():
-	return render_template('browse.html')
+	spotlight = Artist.query.get(randint(1, db.session.query(Artist).count() - 1))
+	spotlight_list = Art.query.filter_by(artist_id=spotlight.id).all()[:5]
+	tracks = []
+	for i in range(5):
+		id = randint(1, db.session.query(Art).count() - 1)
+		piece = Art.query.get(id)
+		tracks.append(piece)
+	return render_template(
+		'browse.html',
+		spotlight=spotlight,
+		spotlight_list=spotlight_list,
+		tracks=tracks
+	)
+
+
+@app.route('/browse/artist/<id>')
+def artist(id):
+	return render_template('artist.html', artist=Artist.query.get(id))
+
+
+@app.route('/browse/art/<id>')
+def art(id):
+	return render_template('art.html', art=Art.query.get(id))
 
 
 @app.route('/about')

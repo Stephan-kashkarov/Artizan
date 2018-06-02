@@ -1,0 +1,8 @@
+#thing{
+    text-align: center;
+}
+
+.carousel-inner img{
+  min-height : 300px;
+  width : 100%;
+}
