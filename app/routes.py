@@ -111,8 +111,7 @@ def json():
 					artist_id=u.id
 				)
 				db.session.add(a)
-		print(Art.query.all())
-		# db.session.commit()
+		db.session.commit()
 		return "Thanks for the data"
 	else:
 		return "Please provide Auth"

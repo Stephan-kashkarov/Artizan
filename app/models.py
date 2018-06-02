@@ -44,7 +44,7 @@ class Art(db.Model):
 	artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'))
 
 	def __repr__(self):
-		return '<{} - Art>'.format('self.title')
+		return '<{} - Art>'.format(self.title)
 
 
 class Artist(db.Model):
