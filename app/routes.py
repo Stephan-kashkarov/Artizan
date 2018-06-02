@@ -78,16 +78,10 @@ def edit_profile(username):
 def browse():
 	spotlight = Artist.query.get(randint(1, db.session.query(Artist).count() - 1))
 	spotlight_list = Art.query.filter_by(artist_id=spotlight.id).all()[:5]
-	tracks = []
-	for i in range(5):
-		id = randint(1, db.session.query(Art).count() - 1)
-		piece = Art.query.get(id)
-		tracks.append(piece)
 	return render_template(
 		'browse.html',
 		spotlight=spotlight,
-		spotlight_list=spotlight_list,
-		tracks=tracks
+		spotlight_list=spotlight_list
 	)
 
 
