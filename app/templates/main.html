@@ -2,10 +2,10 @@
 
 {% block navbar %}
 <nav class="navbar navbar-expand-sm bg-dark">
-    <a class="navbar-brand" href="/">Songbook</a>
+    <a class="navbar-brand" href="/">Artizan</a>
     <form class="form-inline">
         <input class="form-control mr-sm-2 search-input" type="search" placeholder="Search!" name="search" id="search">
-        <button class="btn btn-search my-2 my-sm-0">
+        <button class="btn btn-search my-2 my-sm-0" id='nav-search'>
             <img src="{{url_for('.static', filename='img/search.svg')}}">
         </button>
     </form>
@@ -54,6 +54,7 @@
 
 {% block scripts %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="{{url_for('static', filename='js/nav.js')}}" charset="utf-8"></script>
         {% block localScripts %}
         {% endblock %}
 {% endblock %}

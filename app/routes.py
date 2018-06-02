@@ -1,8 +1,9 @@
 from app import app, db
-from flask import render_template, redirect, url_for, flash
-from flask_login import current_user, login_user, login_required, logout_user
-from app.models import Person
+from app.models import Person, Artist, Art
 from app.forms import login_form, regist_form, profile_form
+from flask import render_template, redirect, url_for, flash, request
+from flask_login import current_user, login_user, login_required, logout_user
+from json import loads
 
 
 @app.route("/")
@@ -80,3 +81,38 @@ def browse():
 @app.route('/about')
 def about():
 	return render_template('about.html')
+
+
+@app.route('/json', methods=['POST'])
+def json():
+	data = request.data.decode("utf-8")
+	data = loads(data)
+	if data['key'] == 'SECRET_KEY':
+		data = data['data']
+		for i in data:
+			print(i)
+			u = Artist(
+				name=i['name'],
+				life=i['life'],
+				school=i['school'],
+				timeframe=i['timeframe']
+			)
+			db.session.add(u)
+			for j in i['art']:
+				a = Art(
+					title=j['title'],
+					date=j['date'],
+					technique=j['technique'],
+					location=j['location'],
+					url=j['url'],
+					form=j['form'],
+					type=j['type'],
+					img_url=j['img'],
+					author_id=u.id
+				)
+				db.session.add(a)
+		print(Artist.query.all())
+		# db.session.commit()
+		return "Thanks for the data"
+	else:
+		return "Please provide Auth"
