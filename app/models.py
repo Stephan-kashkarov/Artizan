@@ -32,7 +32,7 @@ class Person(UserMixin, db.Model):
 		return check_password_hash(self.password_hash, password)
 
 	def avatar(self, size):
-		digest = hashlibmd5(self.email.lower().encode('utf-8')).hexdigest()
+		digest = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
 		self.profile_pic = \
 			'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
 				digest, size
