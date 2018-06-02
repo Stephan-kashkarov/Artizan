@@ -36,9 +36,9 @@
         {% endif %}
     </ul>
 </nav>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
 <div class="container">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
     <ul class='flashes'>
     {% for message in messages %}
         <li>
@@ -50,10 +50,10 @@
             </div>
         </li>
     {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+</ul>
 </div>
+{% endif %}
+{% endwith %}
 {% endblock %}
 
 {% block styles %}

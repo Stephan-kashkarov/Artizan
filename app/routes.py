@@ -1,10 +1,19 @@
 from app import app, db
 from app.models import Person, Artist, Art
 from app.forms import login_form, regist_form, profile_form
+from datetime import datetime
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, login_required, logout_user
 from json import loads
 from random import randint
+from datetime import datetime
+
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
 
 
 @app.route("/")
