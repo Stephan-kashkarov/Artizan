@@ -62,24 +62,22 @@ def logout():
 @app.route('/user/<username>')
 def profile(username):
 	user = Person.query.filter_by(username=username).first()
-	return render_template('profile.html', user=user)
-
-
-@app.route('/user/<username>/edit')
-@login_required
-def edit_profile(username):
-	user = Person.query.filter_by(usernmae=username).first()
-	form = profile_form()
-	if current_user != user:
-		flash("you cannot edit other users profiles")
-		return redirect(url_for('browse'))
-	else:
+	if current_user == user:
+		form = profile_form()
 		if form.validate_on_submit():
 			current_user.email = form.email.data
 			current_user.bio = form.bio.data
 			db.session.add(current_user)
 			db.session.commit()
 			return redirect(url_for('profile', username=current_user.username))
+		return render_template('profile.html', user=user, form=form)
+	return render_template('profile.html', user=user)
+
+
+@app.route('/user/<username>/edit')
+@login_required
+def edit_profile(username):
+
 		return render_template('edit_profile.html', user=current_user, form=form)
 
 

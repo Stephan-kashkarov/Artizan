@@ -16,4 +16,61 @@
         {% endif %}
     </div>
 </div>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Showcase</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Playlists</a>
+  </li>
+  <li class="nav-item">
+    {% if current_user == user %}
+    <a class="nav-link" href="#">Edit</a>
+    {% else %}
+    <a class="nav-link disabled" href="#">Edit</a>
+    {% endif %}
+  </li>
+</ul>
+
+<div class="container">
+<div class="Showcase">
+
+</div>
+
+<div class="Playlists hidden">
+
+</div>
+
+{% if current_user == user %}
+<div class="Edit hidden">
+	<form action="" method="post">
+	    {{form.hidden_tag()}}
+	    <p>
+	        {{form.password.label}}<br> {{form.password(size=32)}}
+	        <br> {% for error in form.password.errors %}
+	        <span style="color: red;">[{{error}}]</span> {% endfor %}
+	    </p>
+	    <p>
+	        {{form.email.label}}<br> {{form.email(size=32)}}
+	        <br> {% for error in form.email.errors %}
+	        <span style="color: red;">[{{error}}]</span> {% endfor %}
+	    </p>
+	    <p>
+	        {{form.bio.label}}<br> {{form.bio(size=32)}}
+	        <br> {% for error in form.bio.errors %}
+	        <span style="color: red;">[{{error}}]</span> {% endfor %}
+	    </p>
+		<hr>
+		<button type="submit" class="btn btn-default btn-primary">
+	        Register!
+	    </button>
+	</form>
+</div>
+{% endif %}
+</div>
+{% endblock %}
+
+
+{% block localScripts %}
+<script src="{{url_for('static', filename='js/profile.js')}}" charset="utf-8"></script>
 {% endblock %}
