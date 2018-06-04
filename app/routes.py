@@ -59,26 +59,21 @@ def logout():
 	return redirect(url_for('welcome'))
 
 
-@app.route('/user/<username>')
+@app.route('/user/<username>', methods=['GET', 'POST'])
 def profile(username):
 	user = Person.query.filter_by(username=username).first()
 	if current_user == user:
 		form = profile_form()
 		if form.validate_on_submit():
-			current_user.email = form.email.data
-			current_user.bio = form.bio.data
-			db.session.add(current_user)
+			if form.email.data:
+				current_user.email = form.email.data
+			if form.bio.data:
+				current_user.bio = form.bio.data
 			db.session.commit()
 			return redirect(url_for('profile', username=current_user.username))
 		return render_template('profile.html', user=user, form=form)
 	return render_template('profile.html', user=user)
 
-
-@app.route('/user/<username>/edit')
-@login_required
-def edit_profile(username):
-
-		return render_template('edit_profile.html', user=current_user, form=form)
 
 
 @app.route('/browse')

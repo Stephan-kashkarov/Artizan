@@ -18,4 +18,12 @@ $( document ).ready( function() {
 			$("." + current_thing).removeClass('hidden');
          }
      });
+
+	 $('.edit-button').click(function(e){
+
+	 });
+
+	 $('a').click(function(e){
+		 event.preventDefault();
+	 });
 });

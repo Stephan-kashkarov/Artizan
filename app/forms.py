@@ -31,5 +31,5 @@ class regist_form(FlaskForm):
 
 class profile_form(FlaskForm):
 	password = PasswordField('Password:', validators=[DataRequired()])
-	email = StringField('Change email:', validators=[Email()])
+	email = StringField('Change email:')
 	bio = StringField('Edit Bio:')
