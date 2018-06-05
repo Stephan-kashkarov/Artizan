@@ -54,7 +54,7 @@ class Art(db.Model):
 	type = db.Column(db.String(100))
 	img_url = db.Column(db.String(100))
 	artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'))
-	user_id = db.Column(db.Integer, db.ForeignKey('artist.id'))
+	user_id = db.Column(db.Integer, db.ForeignKey('person.id'))
 	playlists = db.relationship('Playlist_art', backref='art', lazy='dynamic')
 
 	def __repr__(self):
