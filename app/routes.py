@@ -102,7 +102,8 @@ def profile(username):
 			else:
 				flash("img dosent exist")
 			return redirect(url_for('profile', username=current_user.username))
-		return render_template('profile.html', user=user, form=form, form1=form1)
+		else:
+			return render_template('profile.html', user=user, form=form, form1=form1)
 	else:
 		return render_template('profile.html', user=user, form=form, form1=form1)
 
