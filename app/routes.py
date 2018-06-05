@@ -64,9 +64,12 @@ def logout():
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def profile(username):
 	user = Person.query.filter_by(username=username).first()
+	if not user:
+		return redirect(url_for('home'))
+	print(user)
 	form = profile_form()
 	form1 = art_form()
-	showcases = Art.query.filter_by(artist_id="u" + user.id).all()
+	showcases = Art.query.filter_by(artist_id=int(str(999) + str(user.id))).all()
 	playlist = Playlist.query.filter_by(account_id=user.id).all()
 	if current_user == user:
 		if form.validate_on_submit():
@@ -84,13 +87,13 @@ def profile(username):
 					technique=form1.technique.data,
 					location=form1.location.data,
 					form=form1.form.data,
-					user_id='u' + current_user.id
+					user_id=int(str(999) + str(current_user.id))
 				)
 				photos = UploadSet('photos', IMAGES)
 				filename = photos.save(
 					FileStorage(request.files.get('photo')),
 					'useruploads',
-					str(form1.title.data + str(current_user.id)) + '.jpg'
+					str(form1.title.data + str(999) + str(current_user.id)) + '.jpg'
 				)
 				file_url = photos.url(filename)
 				a.img_url = file_url
