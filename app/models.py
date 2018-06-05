@@ -80,6 +80,7 @@ class Playlist(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(100))
+	desc = db.Column(db.String(100))
 	account_id = db.Column(db.Integer, db.ForeignKey('person.id'))
 	arts = db.relationship('Playlist_art', backref='playlist', lazy='dynamic')
 

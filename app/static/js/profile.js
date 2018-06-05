@@ -1,5 +1,7 @@
 $( document ).ready( function() {
      $('.nav-tabs .nav-item').click(function(e){
+		 $(".contents .Make").addClass("hidden");
+		 $(".contents .Art").addClass("hidden");
          if (
             (!($(this).children().hasClass('disabled'))) ||
             ($(this).children().hasClass('active'))
@@ -23,10 +25,14 @@ $( document ).ready( function() {
 	});
 
 	 $('.btn').click(function(e){
-		if ( $( this ).text() == 'Upload Art' ){
+		if ( $( this ).text() === 'Upload Art' ){
 			$('.contents').children('Showcase').addClass('hidden');
 			$(".contents .Showcase").addClass("hidden");
 			$(".contents .Art").removeClass("hidden");
+		} else if ( $( this ).text() === 'Make Playlist'){
+			$('.contents').children('Showcase').addClass('hidden');
+			$(".contents .Playlists").addClass("hidden");
+			$(".contents .Make").removeClass("hidden");
 		}
 	});
 });

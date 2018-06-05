@@ -1,3 +1,7 @@
 .tabs {
 	padding-left: 20rem;
 }
+.card {
+	width: 18rem;
+	float: left;
+}

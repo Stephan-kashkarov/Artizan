@@ -1,0 +1,13 @@
+{% extends 'main.html' %}
+
+{% block main %}
+
+{% endblock %}
+
+{% block localScripts %}
+<script src="{{url_for('static', filename='js/search.js')}}" charset="utf-8"></script>
+{% endblock %}
+
+{% block lstyles %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/search.css')}}">
+{% endblock %}

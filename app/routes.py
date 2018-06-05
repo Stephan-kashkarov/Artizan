@@ -65,11 +65,11 @@ def logout():
 def profile(username):
 	user = Person.query.filter_by(username=username).first()
 	if not user:
-		return redirect(url_for('home'))
+		return 404
 	print(user)
 	form = profile_form()
 	form1 = art_form()
-	showcases = Art.query.filter_by(artist_id=int(str(999) + str(user.id))).all()
+	showcases = Art.query.filter_by(user_id=user.id).all()
 	playlist = Playlist.query.filter_by(account_id=user.id).all()
 	if current_user == user:
 		if form.validate_on_submit():
@@ -87,13 +87,13 @@ def profile(username):
 					technique=form1.technique.data,
 					location=form1.location.data,
 					form=form1.form.data,
-					user_id=int(str(999) + str(current_user.id))
+					user_id=current_user.id
 				)
 				photos = UploadSet('photos', IMAGES)
 				filename = photos.save(
 					FileStorage(request.files.get('photo')),
 					'useruploads',
-					str(form1.title.data + str(999) + str(current_user.id)) + '.jpg'
+					str(form1.title.data + str(current_user.id)) + '.jpg'
 				)
 				a.img_url = 'imgs/art/uploads/' + filename
 				print(a.img_url)
@@ -182,3 +182,19 @@ def json():
 		return "Thanks for the data"
 	else:
 		return "Please provide Auth"
+
+
+@app.route('/search/<search_term>', methods=['GET', 'POST'])
+def search(search_term=None):
+	users = Person.query.filter(Person.username.like(search_term)).all()
+	arts = Art.query.filter(Art.title.like(search_term)).all()
+	artists = Artist.query.filter(Artist.name.like(search_term)).all()
+	if search_term:
+		return render_template(
+			'search.html',
+			users=users,
+			arts=arts,
+			artists=artists
+		)
+	else:
+		return users, arts, artists
