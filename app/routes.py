@@ -73,8 +73,8 @@ def profile(username):
 	if not user:
 		return '404'
 	form = profile_form()
-	form1 = art_form()
 	form2 = playlist_form()
+	form1 = art_form()
 	showcases = Art.query.filter_by(user_id=user.id).all()
 	playlist = Playlist.query.filter_by(account_id=user.id).all()
 	if current_user == user:
@@ -86,31 +86,6 @@ def profile(username):
 			db.session.commit()
 			flash('Your profile is updated!')
 			return redirect(url_for('profile', username=current_user.username))
-		if form1.validate_on_submit():
-			if request.files:
-				a = Art(
-					title=form1.title.data,
-					technique=form1.technique.data,
-					location=form1.location.data,
-					form=form1.form.data,
-					user_id=current_user.id
-				)
-				photos = UploadSet('photos', IMAGES)
-				filename = photos.save(
-					FileStorage(request.files.get('photo')),
-					'useruploads',
-					str(form1.title.data + str(current_user.id)) + '.jpg'
-				)
-				a.img_url = 'imgs/art/uploads/' + filename
-				print(a.img_url)
-				a.date = datetime.now()
-				db.session.add(a)
-				db.session.commit()
-				flash('img was uploaded to database')
-			else:
-				flash("img dosent exist")
-			return redirect(url_for('profile', username=current_user.username))
-
 	return render_template(
 		'profile.html',
 		user=user,
@@ -133,6 +108,34 @@ def Make_playlist():
 	db.session.add(p)
 	db.session.commit()
 	flash('Playlist Created')
+	return redirect(url_for('profile', username=current_user.username))
+
+
+@app.route('/Make_showcase', methods=["POST"])
+def Make_showcase():
+	form1 = art_form()
+	if request.files:
+		a = Art(
+			title=form1.title.data,
+			technique=form1.technique.data,
+			location=form1.location.data,
+			form=form1.form.data,
+			user_id=current_user.id
+		)
+		photos = UploadSet('photos', IMAGES)
+		filename = photos.save(
+			FileStorage(request.files.get('photo')),
+			'useruploads',
+			str(form1.title.data + str(current_user.id)) + '.jpg'
+		)
+		a.img_url = 'imgs/art/uploads/' + filename
+		print(a.img_url)
+		a.date = datetime.now()
+		db.session.add(a)
+		db.session.commit()
+		flash('img was uploaded to database')
+	else:
+		flash("img dosent exist")
 	return redirect(url_for('profile', username=current_user.username))
 
 

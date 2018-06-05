@@ -142,7 +142,7 @@
 		{% endif %}
 
 	<div class="Art tabs hidden">
-		<form action="" method="post" enctype="multipart/form-data">
+		<form action="{{url_for('Make_showcase')}}" method="post" enctype="multipart/form-data">
 		    {{ form1.hidden_tag() }}
 		    <p>
 		        {{ form1.title.label }}
