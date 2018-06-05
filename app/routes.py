@@ -76,21 +76,31 @@ def profile(username):
 			flash('Your profile is updated!')
 			return redirect(url_for('profile', username=current_user.username))
 		if form1.validate_on_submit():
-			a = Art(
-				title=form1.title.data,
-				date=datetime.now,
-				technique=form1.technique.data,
-				location=form1.location.data,
-				form=form1.form.data,
-				artist_id=current_user.id
-			)
-			photos = UploadSet('photos', IMAGES)
-			filename = photos.save(FileStorage(form1.photo))
-			file_url = photos.url(filename)
-			a.img_url = file_url
-			db.session.add(a)
-			db.session.commit()
-			flash('uploaded to database')
+			if 'file' in request.files:
+				a = Art(
+					title=form1.title.data,
+					date=datetime.now,
+					technique=form1.technique.data,
+					location=form1.location.data,
+					form=form1.form.data,
+					artist_id=current_user.id
+				)
+				photos = UploadSet('photos', IMAGES)
+				print(dir(request))
+				print(request.files)
+				print(str(form1.title.data + str(current_user.id)) + '.jpg')
+				filename = photos.save(
+					FileStorage(request.files),
+					'useruploads',
+					str(form1.title.data + str(current_user.id)) + '.jpg'
+				)
+				file_url = photos.url(filename)
+				a.img_url = file_url
+				db.session.add(a)
+				db.session.commit()
+				flash('img wasuploaded to database note: YESYE YOU DID IT FINALY')
+			else:
+				flash("img wasn't submitted")
 			return redirect(url_for('profile', username=current_user.username))
 		return render_template('profile.html', user=user, form=form, form1=form1)
 	else:

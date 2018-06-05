@@ -142,7 +142,7 @@
 		{% endif %}
 
 	<div class="Art tabs hidden">
-		<form action="" method="post">
+		<form action="" method="post" enctype="multipart/form-data">
 		    {{ form1.hidden_tag() }}
 		    <p>
 		        {{ form1.title.label }}
@@ -189,12 +189,7 @@
 		        <span style="color: red;">[{{ error }}]</span>
 		        {% endfor %}
 		    </p>
-			<p>
-		        {{ form1.photo}}<br>
-		        {% for error in form1.photo.errors %}
-		        <span style="color: red;">[{{ error }}]</span>
-		        {% endfor %}
-		    </p>
+			<input type="file" name="" value="Upload art">
 		    <button type="submit" class="btn btn-default btn-primary">
 		        Upload!
 		    </button>
