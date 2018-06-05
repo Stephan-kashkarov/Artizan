@@ -1,10 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_uploads import UploadSet, IMAGES
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField, BooleanField, DateField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import Person
-
 
 class login_form(FlaskForm):
 	username = StringField('Username:', validators=[DataRequired()])
@@ -41,12 +40,10 @@ photos = UploadSet('photos', IMAGES)
 
 class art_form(FlaskForm):
 	title = StringField('Choose a Title:', validators=[DataRequired()])
-	date = StringField('Choose a date', validators=[DataRequired()])
 	technique = StringField('Choose a technique:', validators=[DataRequired()])
 	location = StringField('Choose a location:', validators=[DataRequired()])
 	form = StringField('Choose a form:', validators=[DataRequired()])
 	type = StringField('Choose a type:', validators=[DataRequired()])
 	photo = FileField(validators=[
-		FileAllowed(photos, u'Image only!'),
-		FileRequired(u'File was empty!')
+		FileAllowed(photos, u'Image only!')
 	])

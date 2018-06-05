@@ -4,14 +4,11 @@ from app.forms import login_form, regist_form, profile_form, art_form
 from datetime import datetime
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, login_required, logout_user
+from flask_uploads import UploadSet, IMAGES
 from json import loads
 from random import randint
 from werkzeug.utils import secure_filename
-
-
-def allowed_file(filename):
-	return '.' in filename and \
-		filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+from werkzeug.datastructures import FileStorage
 
 
 @app.before_request
@@ -67,9 +64,9 @@ def logout():
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def profile(username):
 	user = Person.query.filter_by(username=username).first()
+	form = profile_form()
+	form1 = art_form()
 	if current_user == user:
-		form = profile_form()
-		form1 = art_form()
 		if form.validate_on_submit():
 			if form.email.data:
 				current_user.email = form.email.data
@@ -78,9 +75,26 @@ def profile(username):
 			db.session.commit()
 			flash('Your profile is updated!')
 			return redirect(url_for('profile', username=current_user.username))
+		if form1.validate_on_submit():
+			a = Art(
+				title=form1.title.data,
+				date=datetime.now,
+				technique=form1.technique.data,
+				location=form1.location.data,
+				form=form1.form.data,
+				artist_id=current_user.id
+			)
+			photos = UploadSet('photos', IMAGES)
+			filename = photos.save(FileStorage(form1.photo))
+			file_url = photos.url(filename)
+			a.img_url = file_url
+			db.session.add(a)
+			db.session.commit()
+			flash('uploaded to database')
+			return redirect(url_for('profile', username=current_user.username))
 		return render_template('profile.html', user=user, form=form, form1=form1)
 	else:
-		return render_template('profile.html', user=user)
+		return render_template('profile.html', user=user, form=form, form1=form1)
 
 
 @app.route('/browse')
