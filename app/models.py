@@ -20,7 +20,7 @@ class Person(UserMixin, db.Model):
 	bio = db.Column(db.String(250))
 	joined = db.Column(db.DateTime, default=datetime.utcnow)
 	last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-	artist = db.relationship('Artist', backref='account', lazy='dynamic')
+	art = db.relationship('Art', backref='account', lazy='dynamic')
 	playlist = db.relationship('Playlist', backref='account', lazy='dynamic')
 
 	def __repr__(self):
@@ -54,6 +54,7 @@ class Art(db.Model):
 	type = db.Column(db.String(100))
 	img_url = db.Column(db.String(100))
 	artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'))
+	user_id = db.Column(db.Integer, db.ForeignKey('artist.id'))
 	playlists = db.relationship('Playlist_art', backref='art', lazy='dynamic')
 
 	def __repr__(self):
@@ -68,7 +69,6 @@ class Artist(db.Model):
 	life = db.Column(db.String(100))
 	school = db.Column(db.String(100))
 	timeframe = db.Column(db.String(100))
-	account_id = db.Column(db.Integer, db.ForeignKey('person.id'))
 	art = db.relationship('Art', backref='artist', lazy='dynamic')
 
 	def __repr__(self):

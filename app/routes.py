@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import Person, Artist, Art
+from app.models import Person, Artist, Art, Playlist, Playlist_art
 from app.forms import login_form, regist_form, profile_form, art_form
 from datetime import datetime
 from flask import render_template, redirect, url_for, flash, request
@@ -66,6 +66,8 @@ def profile(username):
 	user = Person.query.filter_by(username=username).first()
 	form = profile_form()
 	form1 = art_form()
+	showcases = Art.query.filter_by(artist_id="u" + user.id).all()
+	playlist = Playlist.query.filter_by(account_id=user.id).all()
 	if current_user == user:
 		if form.validate_on_submit():
 			if form.email.data:
@@ -76,36 +78,47 @@ def profile(username):
 			flash('Your profile is updated!')
 			return redirect(url_for('profile', username=current_user.username))
 		if form1.validate_on_submit():
-			if 'file' in request.files:
+			if request.files:
 				a = Art(
 					title=form1.title.data,
-					date=datetime.now,
 					technique=form1.technique.data,
 					location=form1.location.data,
 					form=form1.form.data,
-					artist_id=current_user.id
+					user_id='u' + current_user.id
 				)
 				photos = UploadSet('photos', IMAGES)
-				print(dir(request))
-				print(request.files)
-				print(str(form1.title.data + str(current_user.id)) + '.jpg')
 				filename = photos.save(
-					FileStorage(request.files),
+					FileStorage(request.files.get('photo')),
 					'useruploads',
 					str(form1.title.data + str(current_user.id)) + '.jpg'
 				)
 				file_url = photos.url(filename)
 				a.img_url = file_url
+				a.date = datetime.now()
 				db.session.add(a)
 				db.session.commit()
-				flash('img wasuploaded to database note: YESYE YOU DID IT FINALY')
+				flash('img was uploaded to database')
 			else:
 				flash("img dosent exist")
 			return redirect(url_for('profile', username=current_user.username))
 		else:
-			return render_template('profile.html', user=user, form=form, form1=form1)
+			return render_template(
+				'profile.html',
+				user=user,
+				showcases=showcases,
+				playlists=playlist,
+				form=form,
+				form1=form1
+			)
 	else:
-		return render_template('profile.html', user=user, form=form, form1=form1)
+		return render_template(
+			'profile.html',
+			user=user,
+			showcases=showcases,
+			playlists=playlist,
+			form=form,
+			form1=form1
+		)
 
 
 @app.route('/browse')
