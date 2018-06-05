@@ -70,6 +70,10 @@ def profile(username):
 			if form.bio.data:
 				current_user.bio = form.bio.data
 			db.session.commit()
+			flash('Your profile is updated!')
+			return redirect(url_for('profile', username=current_user.username))
+		else:
+			flash('Profile couldnt update')
 			return redirect(url_for('profile', username=current_user.username))
 		return render_template('profile.html', user=user, form=form)
 	return render_template('profile.html', user=user)
@@ -128,6 +132,32 @@ def json():
 					type=j['painting_type'],
 					img_url=j['img'],
 					artist_id=u.id
+				)
+				db.session.add(a)
+		db.session.commit()
+		return "Thanks for the data"
+	else:
+		return "Please provide Auth"
+
+
+@app.route('/jsonart', methods=['POST'])
+def jsonart():
+	data = request.data.decode("utf-8")
+	data = loads(data)
+	if data['key'] == 'SECRET_KEY':
+		data = data['data']
+		for i in data:
+			for j in i['art']:
+				a = Art(
+					title=j['title'],
+					date=j['date'],
+					technique=j['technique'],
+					location=j['location'],
+					url=j['url'],
+					form=j['form'],
+					type=j['painting_type'],
+					img_url=j['img'],
+					artist_id=current_user.id
 				)
 				db.session.add(a)
 		db.session.commit()

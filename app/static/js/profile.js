@@ -19,11 +19,8 @@ $( document ).ready( function() {
          }
      });
 
-	 $('.edit-button').click(function(e){
-
+	$('a').click(function(e){
+		event.preventDefault();
 	 });
 
-	 $('a').click(function(e){
-		 event.preventDefault();
-	 });
 });

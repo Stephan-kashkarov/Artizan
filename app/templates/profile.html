@@ -8,9 +8,6 @@
         <strong>Bio: </strong><span>{{user.bio}}</span><br>
         <strong>joined: </strong><span>{{user.joined}}</span><br>
         <button type="button" class="btn btn-secondary btn-block">Playlists</button>
-        {% if user == current_user %}
-        <button type="button" class="btn btn-success btn-block edit-button">Edit</button>
-        {% endif %}
         {% if user.last_seen %}
         <p class='text-muted'>Last seen on: {{ user.last_seen }}</p>
         {% endif %}
@@ -18,7 +15,7 @@
 </div>
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link active " href="">Showcase</a>
+    <a class="nav-link active" href="">Showcase</a>
   </li>
   <li class="nav-item">
     <a class="nav-link playlists" href="">Playlists</a>
@@ -33,11 +30,89 @@
 </ul>
 <div class="contents">
 	<div class="Showcase tabs">
-
+		{% if user == current_user %}
+			{% if showcases %}
+				{% for artwork in showcases %}
+				<div class="card">
+				  <img class="card-img-top feat-art" src="{{ url_for('static', filename=artwork.img_url) }}" alt="Card image cap">
+				  <div class="card-body">
+					<h5 class="card-title">{{artwork.title}}</h5>
+					<p class="card-text"><strong>Date:</strong> {{artwork.date}}<br><strong>Technique:</strong> {{artwork.technique}}<br><strong>Location:</strong> {{artwork.location}}</p>
+					<p class="card-text"><small class="text-muted"><a href="{{url_for('art', id=artwork.id)}}">view</a></small></p>
+				  </div>
+				</div>
+				{% endfor %}
+			{% else %}
+				<p class="card-text">
+					<small class="text-muted">
+						You dont have any Showcases
+					</small>
+				</p>
+			{% endif %}
+			<button type="button" class="btn btn-secondary btn-block">Upload Art</button>
+		{% else %}
+			{% if showcases %}
+				{% for artwork in showcases %}
+				<div class="card">
+				  <img class="card-img-top feat-art" src="{{ url_for('static', filename=artwork.img_url) }}" alt="Card image cap">
+				  <div class="card-body">
+					<h5 class="card-title">{{artwork.title}}</h5>
+					<p class="card-text"><strong>Date:</strong> {{artwork.date}}<br><strong>Technique:</strong> {{artwork.technique}}<br><strong>Location:</strong> {{artwork.location}}</p>
+					<p class="card-text"><small class="text-muted"><a href="{{url_for('art', id=artwork.id)}}">view</a></small></p>
+				  </div>
+				</div>
+				{% endfor %}
+			{% else %}
+				<p class="card-text">
+					<small class="text-muted">
+						{{ user.username }} dosen't have any Artwork
+					</small>
+				</p>
+			{% endif %}
+		{% endif %}
 	</div>
 
 	<div class="Playlists tabs hidden">
-
+		{% if user == current_user %}
+			{% if playlists %}
+				{% for playlist in playlists %}
+				<div class="card">
+				  <img class="card-img-top feat-art" src="{{ url_for('static', filename=playlist.img_url) }}" alt="Card image cap">
+				  <div class="card-body">
+					<h5 class="card-title">{{playlist.title}}</h5>
+					<p class="card-text"><strong>Date:</strong> {{playlist.date}}<br><strong>Technique:</strong> {{playlist.technique}}<br><strong>Location:</strong> {{playlist.location}}</p>
+					<p class="card-text"><small class="text-muted"><a href="{{url_for('playlist', id=playlist.id)}}">view</a></small></p>
+				  </div>
+				</div>
+				{% endfor %}
+			{% else %}
+				<p class="card-text">
+					<small class="text-muted">
+						You dont have any Showcases
+					</small>
+				</p>
+			{% endif %}
+			<button type="button" class="btn btn-secondary btn-block">Upload Art</button>
+		{% else %}
+			{% if playlists %}
+				{% for playlist in playlists %}
+				<div class="card">
+				  <img class="card-img-top feat-art" src="{{ url_for('static', filename=playlist.img_url) }}" alt="Card image cap">
+				  <div class="card-body">
+					<h5 class="card-title">{{playlist.title}}</h5>
+					<p class="card-text">playlist description! DEV DONT FORGET!!</p>
+					<p class="card-text"><small class="text-muted"><a href="{{url_for('playlist', id=playlist.id)}}">view</a></small></p>
+				  </div>
+				</div>
+				{% endfor %}
+			{% else %}
+				<p class="card-text">
+					<small class="text-muted">
+						{{ user.username }} dosen't have any Artwork
+					</small>
+				</p>
+			{% endif %}
+		{% endif %}
 	</div>
 
 	{% if current_user == user %}
@@ -59,7 +134,7 @@
 		        <br> {% for error in form.bio.errors %}
 		        <span style="color: red;">[{{error}}]</span> {% endfor %}
 		    </p>
-			<button type="submit" class="btn btn-default btn-primary">
+			<button type="submit" class="btn btn-default btn-primary submitbutton">
 		        Edit profile
 		    </button>
 		</form>
