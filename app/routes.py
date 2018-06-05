@@ -1,6 +1,12 @@
 from app import app, db
 from app.models import Person, Artist, Art, Playlist, Playlist_art
-from app.forms import login_form, regist_form, profile_form, art_form
+from app.forms import (
+	login_form,
+	regist_form,
+	profile_form,
+	art_form,
+	playlist_form
+)
 from datetime import datetime
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, login_required, logout_user
@@ -65,10 +71,10 @@ def logout():
 def profile(username):
 	user = Person.query.filter_by(username=username).first()
 	if not user:
-		return 404
-	print(user)
+		return '404'
 	form = profile_form()
 	form1 = art_form()
+	form2 = playlist_form()
 	showcases = Art.query.filter_by(user_id=user.id).all()
 	playlist = Playlist.query.filter_by(account_id=user.id).all()
 	if current_user == user:
@@ -104,24 +110,32 @@ def profile(username):
 			else:
 				flash("img dosent exist")
 			return redirect(url_for('profile', username=current_user.username))
-		else:
-			return render_template(
-				'profile.html',
-				user=user,
-				showcases=showcases,
-				playlists=playlist,
-				form=form,
-				form1=form1
-			)
-	else:
-		return render_template(
-			'profile.html',
-			user=user,
-			showcases=showcases,
-			playlists=playlist,
-			form=form,
-			form1=form1
+
+	return render_template(
+		'profile.html',
+		user=user,
+		showcases=showcases,
+		playlists=playlist,
+		form=form,
+		form1=form1,
+		form2=form2
+	)
+
+
+@app.route('/Make_playlist', methods=["POST"])
+def Make_playlist():
+	form2 = playlist_form()
+	if form2.validate_on_submit():
+		flash('testing')
+		p = Playlist(
+			title=form2.title.data,
+			desc=form2.desc.data,
+			account_id=current_user.id
 		)
+		db.session.add(p)
+		db.session.commit()
+		flash('Playlist Created')
+	return redirect(url_for('profile', username=current_user.username))
 
 
 @app.route('/browse')

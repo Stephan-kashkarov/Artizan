@@ -1,7 +1,13 @@
 from flask_wtf import FlaskForm
 from flask_uploads import UploadSet, IMAGES
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, DateField
+from wtforms import (
+	StringField,
+	PasswordField,
+	BooleanField,
+	DateField,
+	SubmitField
+)
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import Person
 
@@ -49,3 +55,8 @@ class art_form(FlaskForm):
 		FileAllowed(photos, u'Image only!'),
 		FileRequired(u'File was empty!')
 	])
+
+
+class playlist_form(FlaskForm):
+	titlel = StringField('Choose a Title:', validators=[DataRequired()])
+	descl = StringField('Choose a Description:')
