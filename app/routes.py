@@ -11,9 +11,9 @@ from datetime import datetime
 
 @app.before_request
 def before_request():
-    if current_user.is_authenticated:
-        current_user.last_seen = datetime.utcnow()
-        db.session.commit()
+	if current_user.is_authenticated:
+		current_user.last_seen = datetime.utcnow()
+		db.session.commit()
 
 
 @app.route("/")
@@ -72,12 +72,9 @@ def profile(username):
 			db.session.commit()
 			flash('Your profile is updated!')
 			return redirect(url_for('profile', username=current_user.username))
-		else:
-			flash('Profile couldnt update')
-			return redirect(url_for('profile', username=current_user.username))
 		return render_template('profile.html', user=user, form=form)
-	return render_template('profile.html', user=user)
-
+	else:
+		return render_template('profile.html', user=user)
 
 
 @app.route('/browse')
@@ -141,6 +138,7 @@ def json():
 
 
 @app.route('/jsonart', methods=['POST'])
+@login_required
 def jsonart():
 	data = request.data.decode("utf-8")
 	data = loads(data)

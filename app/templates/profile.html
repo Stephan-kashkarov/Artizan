@@ -88,11 +88,11 @@
 			{% else %}
 				<p class="card-text">
 					<small class="text-muted">
-						You dont have any Showcases
+						You dont have any Playlists
 					</small>
 				</p>
 			{% endif %}
-			<button type="button" class="btn btn-secondary btn-block">Upload Art</button>
+			<button type="button" class="btn btn-secondary btn-block">Make Playlist</button>
 		{% else %}
 			{% if playlists %}
 				{% for playlist in playlists %}
@@ -108,7 +108,7 @@
 			{% else %}
 				<p class="card-text">
 					<small class="text-muted">
-						{{ user.username }} dosen't have any Artwork
+						{{ user.username }} dosen't have any Playlists
 					</small>
 				</p>
 			{% endif %}

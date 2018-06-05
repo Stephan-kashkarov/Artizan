@@ -20,7 +20,8 @@ class Person(UserMixin, db.Model):
 	bio = db.Column(db.String(250))
 	joined = db.Column(db.DateTime, default=datetime.utcnow)
 	last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-	artist = db.relationship('Artist', backref='account', lazy='dynamic')
+	artist = db.relationship('Artist', backref='account_id', lazy='dynamic')
+	playlist = db.relationship('Playlist', backref='account_id', lazy='dynamic')
 
 	def __repr__(self):
 		return '<User {}>'.format(self.username)
@@ -53,6 +54,7 @@ class Art(db.Model):
 	type = db.Column(db.String(100))
 	img_url = db.Column(db.String(100))
 	artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'))
+	playlists = db.relationship('Playlist_art', backref='art', lazy='dynamic')
 
 	def __repr__(self):
 		return '<{} - Art>'.format(self.title)
@@ -71,3 +73,27 @@ class Artist(db.Model):
 
 	def __repr__(self):
 		return '<Artist {}>'.format(self.name)
+
+
+class Playlist(db.Model):
+	__tablename__ = 'playlist'
+
+	id = db.Column(db.Integer, primary_key=True)
+	title = db.Column(db.String(100))
+	account_id = db.Column(db.Integer, db.ForeignKey('person.id'))
+	arts = db.relationship('Playlist_art', backref='playlist', lazy='dynamic')
+
+
+class Playlist_art(db.Model):
+	__tablename__ = 'playlist_art'
+
+	playlist_id = db.Column(
+		db.Integer,
+		db.ForeignKey(playlist.id),
+		primary_key=True
+	)
+	art_id = db.Column(
+		db.Integer,
+		db.ForeignKey(art.id),
+		primary_key=True
+	)
