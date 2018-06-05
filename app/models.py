@@ -89,11 +89,11 @@ class Playlist_art(db.Model):
 
 	playlist_id = db.Column(
 		db.Integer,
-		db.ForeignKey(playlist.id),
+		db.ForeignKey('playlist.id'),
 		primary_key=True
 	)
 	art_id = db.Column(
 		db.Integer,
-		db.ForeignKey(art.id),
+		db.ForeignKey('art.id'),
 		primary_key=True
 	)
