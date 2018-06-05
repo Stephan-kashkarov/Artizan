@@ -125,16 +125,14 @@ def profile(username):
 @app.route('/Make_playlist', methods=["POST"])
 def Make_playlist():
 	form2 = playlist_form()
-	if form2.validate_on_submit():
-		flash('testing')
-		p = Playlist(
-			title=form2.title.data,
-			desc=form2.desc.data,
-			account_id=current_user.id
-		)
-		db.session.add(p)
-		db.session.commit()
-		flash('Playlist Created')
+	p = Playlist(
+		title=form2.titlel.data,
+		desc=form2.descl.data,
+		account_id=current_user.id
+	)
+	db.session.add(p)
+	db.session.commit()
+	flash('Playlist Created')
 	return redirect(url_for('profile', username=current_user.username))
 
 
@@ -159,9 +157,30 @@ def art(id):
 	return render_template('art.html', art=Art.query.get(id))
 
 
+@app.route('/browse/playlist/<id>')
+def playlist(id):
+	return render_template('playlist.html', playlist=Playlist.query.get(id))
+
+
 @app.route('/about')
 def about():
 	return render_template('about.html')
+
+
+@app.route('/search/<search_term>', methods=['GET', 'POST'])
+def search(search_term=None):
+	users = Person.query.filter(Person.username.like(search_term)).all()
+	arts = Art.query.filter(Art.title.like(search_term)).all()
+	artists = Artist.query.filter(Artist.name.like(search_term)).all()
+	if search_term:
+		return render_template(
+			'search.html',
+			users=users,
+			arts=arts,
+			artists=artists
+		)
+	else:
+		return users, arts, artists
 
 
 @app.route('/json', methods=['POST'])
@@ -196,19 +215,3 @@ def json():
 		return "Thanks for the data"
 	else:
 		return "Please provide Auth"
-
-
-@app.route('/search/<search_term>', methods=['GET', 'POST'])
-def search(search_term=None):
-	users = Person.query.filter(Person.username.like(search_term)).all()
-	arts = Art.query.filter(Art.title.like(search_term)).all()
-	artists = Artist.query.filter(Artist.name.like(search_term)).all()
-	if search_term:
-		return render_template(
-			'search.html',
-			users=users,
-			arts=arts,
-			artists=artists
-		)
-	else:
-		return users, arts, artists
