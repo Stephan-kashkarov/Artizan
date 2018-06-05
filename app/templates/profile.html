@@ -39,7 +39,21 @@
 				  <div class="card-body">
 					<h5 class="card-title">{{artwork.title}}</h5>
 					<p class="card-text"><strong>Date:</strong> {{artwork.date}}<br><strong>Technique:</strong> {{artwork.technique}}<br><strong>Location:</strong> {{artwork.location}}</p>
-					<p class="card-text"><small class="text-muted"><a href="{{url_for('art', id=artwork.id)}}">view</a></small></p>
+					<div class="btn-group dropup">
+						<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							+ Playlist
+						</button>
+						<div class="dropdown-menu imgs">
+						{% for playlist in playlists %}
+						<a class="dropdown-item chooseplaylist" href="">{{playlist.name}}</a>
+						{% endfor %}
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item addplaylist" href="">+ New Playlist</a>
+						</div>
+					</div>
+					<p class="card-text">
+						<small class="text-muted"><a href="{{url_for('art', id=artwork.id)}}">view</a></small>
+					</p>
 				  </div>
 				</div>
 				{% endfor %}
@@ -59,7 +73,21 @@
 				  <div class="card-body">
 					<h5 class="card-title">{{artwork.title}}</h5>
 					<p class="card-text"><strong>Date:</strong> {{artwork.date}}<br><strong>Technique:</strong> {{artwork.technique}}<br><strong>Location:</strong> {{artwork.location}}</p>
-					<p class="card-text"><small class="text-muted"><a href="{{url_for('art', id=artwork.id)}}">view</a></small></p>
+					<div class="btn-group dropup">
+						<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							+ Playlist
+						</button>
+						<div class="dropdown-menu imgs">
+						{% for playlist in playlists %}
+						<a class="dropdown-item chooseplaylist" href="">{{playlist.name}}</a>
+						{% endfor %}
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item addplaylist" href="">+ New Playlist</a>
+						</div>
+					</div>
+					<p class="card-text">
+						<small class="text-muted"><a href="{{url_for('art', id=artwork.id)}}">view</a></small>
+					</p>
 				  </div>
 				</div>
 				{% endfor %}
@@ -101,7 +129,9 @@
 				  <div class="card-body">
 					<h5 class="card-title">{{playlist.title}}</h5>
 					<p class="card-text">playlist description! DEV DONT FORGET!!</p>
-					<p class="card-text"><small class="text-muted"><a href="{{url_for('playlist', id=playlist.id)}}">view</a></small></p>
+					<p class="card-text">
+						<small class="text-muted"><a href="{{url_for('playlist', id=playlist.id)}}">view</a></small>
+					</p>
 				  </div>
 				</div>
 				{% endfor %}

@@ -152,12 +152,26 @@ def browse():
 
 @app.route('/browse/artist/<id>')
 def artist(id):
-	return render_template('artist.html', artist=Artist.query.get(id))
+	artist = Artist.query.get(id)
+	showcases = Art.query.filter_by(artist_id=artist.id).all()
+	return render_template(
+		'artist.html',
+		artist=artist,
+		showcases=showcases
+	)
 
 
 @app.route('/browse/art/<id>')
 def art(id):
-	return render_template('art.html', art=Art.query.get(id))
+	if current_user.is_authenticated:
+		playlists = Playlist.query.filter_by(account_id=current_user.id).all()
+	else:
+		playlists = None
+	return render_template(
+		'art.html',
+		artwork=Art.query.get(id),
+		playlists=playlists
+	)
 
 
 @app.route('/browse/playlist/<id>')
