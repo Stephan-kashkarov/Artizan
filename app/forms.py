@@ -45,5 +45,6 @@ class art_form(FlaskForm):
 	form = StringField('Choose a form:', validators=[DataRequired()])
 	type = StringField('Choose a type:', validators=[DataRequired()])
 	photo = FileField(validators=[
-		FileAllowed(photos, u'Image only!')
+		FileAllowed(photos, u'Image only!'),
+		FileRequired(u'File was empty!')
 	])
