@@ -117,30 +117,100 @@
 
 	{% if current_user == user %}
 	<div class="Edit tabs hidden">
+			<form action="" method="post">
+			    {{form.hidden_tag()}}
+			    <p>
+			        {{form.password.label}}<br> {{form.password(size=32)}}
+			        <br> {% for error in form.password.errors %}
+			        <span style="color: red;">[{{error}}]</span> {% endfor %}
+			    </p>
+			    <p>
+			        {{form.email.label}}<br> {{form.email(size=32)}}
+			        <br> {% for error in form.email.errors %}
+			        <span style="color: red;">[{{error}}]</span> {% endfor %}
+			    </p>
+			    <p>
+			        {{form.bio.label}}<br> {{form.bio(size=32)}}
+			        <br> {% for error in form.bio.errors %}
+			        <span style="color: red;">[{{error}}]</span> {% endfor %}
+			    </p>
+				<button type="submit" class="btn btn-default btn-primary submitbutton">
+			        Edit profile
+			    </button>
+			</form>
+		</div>
+		{% endif %}
+	</div>
+
+	<div class="Art tabs hidden">
 		<form action="" method="post">
-		    {{form.hidden_tag()}}
+		    {{ form1.hidden_tag() }}
 		    <p>
-		        {{form.password.label}}<br> {{form.password(size=32)}}
-		        <br> {% for error in form.password.errors %}
-		        <span style="color: red;">[{{error}}]</span> {% endfor %}
+		        {{ form1.title.label }}
+		        <br>
+		        {{ form1.title(size=32) }}
+		        <br>
+		        {% for error in form1.title.errors %}
+		        <span style="color: red;">[{{ error }}]</span>
+		        {% endfor %}
 		    </p>
 		    <p>
-		        {{form.email.label}}<br> {{form.email(size=32)}}
-		        <br> {% for error in form.email.errors %}
-		        <span style="color: red;">[{{error}}]</span> {% endfor %}
+		        {{ form1.date.label }}
+		        <br>
+		        {{ form1.date(size=32) }}
+		        <br>
+		        {% for error in form1.date.errors %}
+		        <span style="color: red;">[{{ error }}]</span>
+		        {% endfor %}
 		    </p>
-		    <p>
-		        {{form.bio.label}}<br> {{form.bio(size=32)}}
-		        <br> {% for error in form.bio.errors %}
-		        <span style="color: red;">[{{error}}]</span> {% endfor %}
+			<p>
+		        {{ form1.technique.label }}
+		        <br>
+		        {{ form1.technique(size=32) }}
+		        <br>
+		        {% for error in form1.technique.errors %}
+		        <span style="color: red;">[{{ error }}]</span>
+		        {% endfor %}
 		    </p>
-			<button type="submit" class="btn btn-default btn-primary submitbutton">
-		        Edit profile
+			<p>
+		        {{ form1.location.label }}
+		        <br>
+		        {{ form1.location(size=32) }}
+		        <br>
+		        {% for error in form1.location.errors %}
+		        <span style="color: red;">[{{ error }}]</span>
+		        {% endfor %}
+		    </p>
+			<p>
+		        {{ form1.form.label }}
+		        <br>
+		        {{ form1.form(size=32) }}
+		        <br>
+		        {% for error in form1.form.errors %}
+		        <span style="color: red;">[{{ error }}]</span>
+		        {% endfor %}
+		    </p>
+			<p>
+		        {{ form1.type.label }}
+		        <br>
+		        {{ form1.type(size=32) }}
+		        <br>
+		        {% for error in form1.type.errors %}
+		        <span style="color: red;">[{{ error }}]</span>
+		        {% endfor %}
+		    </p>
+			<p>
+		        {{ form1.photo}}<br>
+		        {% for error in form1.photo.errors %}
+		        <span style="color: red;">[{{ error }}]</span>
+		        {% endfor %}
+		    </p>
+		    <button type="submit" class="btn btn-default btn-primary">
+		        Upload!
 		    </button>
 		</form>
-</div>
-</div>
-{% endif %}
+	</div>
+
 {% endblock %}
 
 {% block lstyles %}

@@ -1,6 +1,6 @@
 from app import app, db
 from app.models import Person, Artist, Art
-from app.forms import login_form, regist_form, profile_form
+from app.forms import login_form, regist_form, profile_form, art_form
 from datetime import datetime
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, login_required, logout_user
@@ -69,6 +69,7 @@ def profile(username):
 	user = Person.query.filter_by(username=username).first()
 	if current_user == user:
 		form = profile_form()
+		form1 = art_form()
 		if form.validate_on_submit():
 			if form.email.data:
 				current_user.email = form.email.data
@@ -77,7 +78,7 @@ def profile(username):
 			db.session.commit()
 			flash('Your profile is updated!')
 			return redirect(url_for('profile', username=current_user.username))
-		return render_template('profile.html', user=user, form=form)
+		return render_template('profile.html', user=user, form=form, form1=form1)
 	else:
 		return render_template('profile.html', user=user)
 

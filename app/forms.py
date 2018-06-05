@@ -1,5 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from flask_uploads import UploadSet, IMAGES
+from flask_wtf.file import FileField, FileRequired, FileAllowed
+from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import Person
 
@@ -34,6 +36,8 @@ class profile_form(FlaskForm):
 	email = StringField('Change email:')
 	bio = StringField('Edit Bio:')
 
+photos = UploadSet('photos', IMAGES)
+
 
 class art_form(FlaskForm):
 	title = StringField('Choose a Title:', validators=[DataRequired()])
@@ -42,3 +46,7 @@ class art_form(FlaskForm):
 	location = StringField('Choose a location:', validators=[DataRequired()])
 	form = StringField('Choose a form:', validators=[DataRequired()])
 	type = StringField('Choose a type:', validators=[DataRequired()])
+	photo = FileField(validators=[
+		FileAllowed(photos, u'Image only!'),
+		FileRequired(u'File was empty!')
+	])
