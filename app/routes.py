@@ -179,29 +179,3 @@ def json():
 		return "Thanks for the data"
 	else:
 		return "Please provide Auth"
-
-
-@app.route('/jsonart', methods=['POST'])
-@login_required
-def jsonart():
-	data = request.data.decode("utf-8")
-	data = loads(data)
-	if data['key'] == 'SECRET_KEY':
-		data = data['data']
-		for i in data['art']:
-			a = Art(
-				title=i['title'],
-				date=i['date'],
-				technique=i['technique'],
-				location=i['location'],
-				url=i['url'],
-				form=i['form'],
-				type=i['painting_type'],
-				img_url=i['img'],
-				artist_id=current_user.id
-			)
-		db.session.add(a)
-		db.session.commit()
-		return "Thanks for the data"
-	else:
-		return "Please provide Auth"
