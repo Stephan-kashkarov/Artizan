@@ -23,4 +23,10 @@ $( document ).ready( function() {
 		event.preventDefault();
 	 });
 
+	 $('btn').click(function(e){
+ 		if ( $( this ).text() == 'Upload Art' ){
+ 			$('.contents').children('Showcase').addClass('hidden');
+ 			$('.contents').children('Art').removeClass('hidden');
+ 		}
+ 	});
 });

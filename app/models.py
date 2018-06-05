@@ -20,8 +20,8 @@ class Person(UserMixin, db.Model):
 	bio = db.Column(db.String(250))
 	joined = db.Column(db.DateTime, default=datetime.utcnow)
 	last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-	artist = db.relationship('Artist', backref='account_id', lazy='dynamic')
-	playlist = db.relationship('Playlist', backref='account_id', lazy='dynamic')
+	artist = db.relationship('Artist', backref='account', lazy='dynamic')
+	playlist = db.relationship('Playlist', backref='account', lazy='dynamic')
 
 	def __repr__(self):
 		return '<User {}>'.format(self.username)

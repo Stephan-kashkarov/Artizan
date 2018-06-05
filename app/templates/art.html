@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+
+{% block main %}
+<div class="card">
+	<img class="card-img-top feat-art" src="{{ url_for('static', filename=artwork.img_url) }}" alt="Card image cap">
+	<div class="card-body">
+		<h5 class="card-title">{{artwork.title}}</h5>
+		<p class="card-text"><strong>Date:</strong> {{artwork.date}}<br><strong>Technique:</strong> {{artwork.technique}}<br><strong>Location:</strong> {{artwork.location}}</p>
+		<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			 + Add to playlist
+		</button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			{% for item in playlists %}
+			<a class="dropdown-item" href=''>{{playlist.title}}</a>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block localScripts %}
+<script src="{{url_for('static', filename='js/art.js')}}" charset="utf-8"></script>
+{% endblock %}
+
+{% block lstyles %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/art.css')}}">
+{% endblock %}

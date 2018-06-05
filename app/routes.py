@@ -6,7 +6,12 @@ from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, login_required, logout_user
 from json import loads
 from random import randint
-from datetime import datetime
+from werkzeug.utils import secure_filename
+
+
+def allowed_file(filename):
+	return '.' in filename and \
+		filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.before_request
@@ -107,7 +112,7 @@ def about():
 def json():
 	data = request.data.decode("utf-8")
 	data = loads(data)
-	if data['key'] == 'SECRET_KEY':
+	if data['key'] == app.config['SECRET_KEY']:
 		data = data['data']
 		for i in data:
 			u = Artist(
@@ -144,20 +149,19 @@ def jsonart():
 	data = loads(data)
 	if data['key'] == 'SECRET_KEY':
 		data = data['data']
-		for i in data:
-			for j in i['art']:
-				a = Art(
-					title=j['title'],
-					date=j['date'],
-					technique=j['technique'],
-					location=j['location'],
-					url=j['url'],
-					form=j['form'],
-					type=j['painting_type'],
-					img_url=j['img'],
-					artist_id=current_user.id
-				)
-				db.session.add(a)
+		for i in data['art']:
+			a = Art(
+				title=i['title'],
+				date=i['date'],
+				technique=i['technique'],
+				location=i['location'],
+				url=i['url'],
+				form=i['form'],
+				type=i['painting_type'],
+				img_url=i['img'],
+				artist_id=current_user.id
+			)
+		db.session.add(a)
 		db.session.commit()
 		return "Thanks for the data"
 	else:

@@ -33,3 +33,12 @@ class profile_form(FlaskForm):
 	password = PasswordField('Password:', validators=[DataRequired()])
 	email = StringField('Change email:')
 	bio = StringField('Edit Bio:')
+
+
+class art_form(FlaskForm):
+	title = StringField('Choose a Title:', validators=[DataRequired()])
+	date = StringField('Choose a date', validators=[DataRequired()])
+	technique = StringField('Choose a technique:', validators=[DataRequired()])
+	location = StringField('Choose a location:', validators=[DataRequired()])
+	form = StringField('Choose a form:', validators=[DataRequired()])
+	type = StringField('Choose a type:', validators=[DataRequired()])
