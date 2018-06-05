@@ -95,8 +95,8 @@ def profile(username):
 					'useruploads',
 					str(form1.title.data + str(999) + str(current_user.id)) + '.jpg'
 				)
-				file_url = photos.url(filename)
-				a.img_url = file_url
+				a.img_url = 'imgs/art/uploads/' + filename
+				print(a.img_url)
 				a.date = datetime.now()
 				db.session.add(a)
 				db.session.commit()
