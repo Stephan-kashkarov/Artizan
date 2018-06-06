@@ -8,13 +8,12 @@ $(document).ready(function() {
 		});
 	});
 	$('.delete').click( (e) => {
-		console.log($(this).siblings('.data').children('playlist_id'));
 		p_id = $(this).siblings('.data').children('playlist_id').text;
 		$.ajax({
 			method: 'post',
 			url: '/delete_playlist/' + p_id,
 			succsess: () => {
-				window.location.href='/browse'
+				window.location.href='/browse';
 			}
 		});
 	});

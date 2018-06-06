@@ -227,13 +227,19 @@ def search(term):
 	)
 
 
+@app.route('/get_playlist/<naem>', methods=['POST'])
+def get_playlist(name):
+	playlist = Playlist.query.filter_by(title=name).first_or_404()
+	return playlist.id
+
+
 @app.route('/add_to_playlist/<playlist_id>/<art_id>', methods=['POST'])
 def add_to_playlist(playlist_id, art_id):
 	a = Playlist_art(
 		playlist_id=playlist_id,
 		art_id=art_id
 	)
-	
+
 	db.session.add(a)
 	db.session.commit()
 	flash('Playlist deleted!')
