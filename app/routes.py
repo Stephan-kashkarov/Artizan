@@ -181,7 +181,19 @@ def art(id):
 
 @app.route('/browse/playlist/<id>')
 def playlist(id):
-	return render_template('playlist.html', playlist=Playlist.query.get(id))
+	playlist = Playlist.query.get(id)
+	track_ids = Playlist_art.query.filter_by(playlist_id=playlist.id).all()
+	tracks = []
+	for i in track_ids:
+		i.append(
+			Art.query.get(i)
+		)
+	print(tracks)
+	return render_template(
+		'playlist.html',
+		playlist=playlist,
+		tracks=tracks
+	)
 
 
 @app.route('/about')
@@ -213,6 +225,26 @@ def search(term):
 		artists=artists,
 		term=term
 	)
+
+
+@app.route('/remove_from_playlist/<playlist_id>/<art_id>', methods=['POST'])
+def remove_from_playlist(playlist_id, art_id):
+	a = Playlist_art.query.filter_by(
+		playlist_id=playlist_id,
+		art_id=art_id
+	).first()
+
+	db.session.delete(a)
+	db.session.commit()
+
+
+@app.route('/delete_palylist/<playlist_id>', methods=['POST'])
+def delete_palylist(playlist_id):
+	playlist = Playlist.query.get(playlist_id)
+	for i in Playlist_art.query.filter_by(playlist_id=playlist_id).all():
+		db.session.delete(i)
+	db.session.delete(playlist)
+	db.session.commit()
 
 
 @app.route('/json', methods=['POST'])
