@@ -228,14 +228,15 @@ def search(term):
 
 
 @app.route('/add_to_playlist/<playlist_id>/<art_id>', methods=['POST'])
-def remove_from_playlist(playlist_id, art_id):
+def add_to_playlist(playlist_id, art_id):
 	a = Playlist_art(
 		playlist_id=playlist_id,
 		art_id=art_id
 	)
-
+	
 	db.session.add(a)
 	db.session.commit()
+	flash('Playlist deleted!')
 
 
 @app.route('/remove_from_playlist/<playlist_id>/<art_id>', methods=['POST'])
