@@ -227,7 +227,13 @@ def search(term):
 	)
 
 
-@app.route('/get_playlist/<naem>', methods=['POST'])
+@app.route('/get_art/<name>', methods=['POST'])
+def get_art(name):
+	art = Art.query.filter_by(title=name).first_or_404()
+	return art.id
+
+
+@app.route('/get_playlist/<name>', methods=['POST'])
 def get_playlist(name):
 	playlist = Playlist.query.filter_by(title=name).first_or_404()
 	return playlist.id
