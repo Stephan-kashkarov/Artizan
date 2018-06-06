@@ -3,12 +3,10 @@
 {% block navbar %}
 <nav class="navbar navbar-expand-sm bg-dark">
     <a class="navbar-brand" href="/">Artizan</a>
-    <form class="form-inline">
-        <input class="form-control mr-sm-2 search-input" type="search" placeholder="Search!" name="search" id="search">
-        <button class="btn btn-search my-2 my-sm-0" id='nav-search'>
-            <img src="{{url_for('.static', filename='imgs/search.svg')}}">
-        </button>
-    </form>
+    <input class="form-control mr-sm-2 search-input" type="search" placeholder="Search!" name="search" id="search">
+    <button class="btn btn-search my-2 my-sm-0" id='nav-search'>
+        <img src="{{url_for('.static', filename='imgs/search.svg')}}">
+    </button>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
             <a class="nav-link" href="{{url_for('browse')}}">Browse</a>

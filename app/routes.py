@@ -29,7 +29,7 @@ def welcome():
 	if current_user.is_anonymous:
 		return render_template('index.html')
 	else:
-		return redirect(url_for('browse'))
+		return redirect(url_for('profile', username=current_user.username))
 
 
 @app.route('/login', methods=["POST", "GET"])
@@ -184,12 +184,17 @@ def about():
 	return render_template('about.html')
 
 
-@app.route('/search/<search_term>', methods=['GET', 'POST'])
-def search(search_term=None):
-	users = Person.query.filter(Person.username.like(search_term)).all()
-	arts = Art.query.filter(Art.title.like(search_term)).all()
-	artists = Artist.query.filter(Artist.name.like(search_term)).all()
-	if search_term:
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+	if request.method == 'POST':
+		print(dir(request))
+		print(request.get_data)
+		print(request.data)
+		print(request.form)
+		search_term = request.form
+		users = Person.query.filter(Person.username.like(search_term)).all()
+		arts = Art.query.filter(Art.title.like(search_term)).all()
+		artists = Artist.query.filter(Artist.name.like(search_term)).all()
 		return render_template(
 			'search.html',
 			users=users,
@@ -197,7 +202,12 @@ def search(search_term=None):
 			artists=artists
 		)
 	else:
-		return users, arts, artists
+		return render_template(
+			'search.html',
+			users=users,
+			arts=arts,
+			artists=artists
+		)
 
 
 @app.route('/json', methods=['POST'])
