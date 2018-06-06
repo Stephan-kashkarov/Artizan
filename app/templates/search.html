@@ -4,37 +4,42 @@
 <h1 style="text-align: center;">Your search: {{Term}}</h1>
 <div class="arts">
 	<div class="card">
-	<div class="card-header">
-	  Art
-	</div>
-	 <ul class="list-group list-group-flush">
-		{% for art in arts %}
-		<li class="list-group-item"><a href='{{url_for("art", id=art.id)}}'>{{art.title}}</a></li>
-		{% endfor %}
-	</ul>
+		<div class="card-header">
+		  Art
+		  <button type="button" class="sort-arts btn btn-info ml-auto">Sort</button>
+		</div>
+		 <ul class="list-group list-group-flush arts-list">
+			{% for art in arts %}
+			<li class="list-group-item"><a href='{{url_for("art", id=art.id)}}'>{{art.title}}</a></li>
+			{% endfor %}
+		</ul>
   </div>
 </div>
 <div class="artists">
 	<div class="card">
-	<div class="card-header">
-	  Artists
-	</div>
-	 <ul class="list-group list-group-flush">
-		{% for art in artists %}
-		<li class="list-group-item"><a href='{{url_for("artist", id=art.id)}}'>{{art.name}}</a></li>
-		{% endfor %}
-	</ul>
+		<div class="card-header">
+		  Artists
+		  <button type="button" class="sort-artists btn btn-info ml-auto">Sort</button>
+		</div>
+		 <ul class="list-group list-group-flush artists-list">
+			{% for art in artists %}
+			<li class="list-group-item"><a href='{{url_for("artist", id=art.id)}}'>{{art.name}}</a></li>
+			{% endfor %}
+		</ul>
   </div>
 </div>
-<div class="card">
-<div class="card-header">
-  Users
-</div>
- <ul class="list-group list-group-flush">
-	{% for art in users %}
-	<li class="list-group-item"><a href='{{url_for("user", username=art.username)}}'>{{art.username}}</a></li>
-	{% endfor %}
-</ul>
+<div class="users">
+	<div class="card">
+		<div class="card-header">
+		  Users
+		  <button type="button" class="sort-users btn btn-info ml-auto">Sort</button>
+		</div>
+		 <ul class="list-group list-group-flush">
+			{% for art in users %}
+			<li class="list-group-item"><a href='{{url_for("user", username=art.username)}}'>{{art.username}}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
 </div>
 {% endblock %}
 
