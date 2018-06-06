@@ -248,7 +248,7 @@ def add_to_playlist(playlist_id, art_id):
 
 	db.session.add(a)
 	db.session.commit()
-	flash('Playlist deleted!')
+	flash('Added to playlist')
 
 
 @app.route('/remove_from_playlist/<playlist_id>/<art_id>', methods=['POST'])
