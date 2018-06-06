@@ -29,10 +29,21 @@ $( document ).ready( function() {
 			$('.contents').children('Showcase').addClass('hidden');
 			$(".contents .Showcase").addClass("hidden");
 			$(".contents .Art").removeClass("hidden");
-		} else if ( $( this ).text() === 'Make Playlist'){
-			$('.contents').children('Showcase').addClass('hidden');
-			$(".contents .Playlists").addClass("hidden");
-			$(".contents .Make").removeClass("hidden");
 		}
+	});
+
+	$('.delete-playlist').click( () => {
+		playlist_id = $(this)[0].activeElement.parentElement.children[2].firstChild.data
+		$.ajax({
+			method: 'POST',
+			url: '/delete_playlist/' + playlist_id,
+			succsess: (response) => {
+				console.log(response);
+				window.location.reload();
+			},
+			error: (error) => {
+				console.log(error);
+			}
+		});
 	});
 });

@@ -34,9 +34,9 @@
 		  Users
 		  <button type="button" class="sort-users btn btn-info ml-auto">Sort</button>
 		</div>
-		 <ul class="list-group list-group-flush">
-			{% for art in users %}
-			<li class="list-group-item"><a href='{{url_for("user", username=art.username)}}'>{{art.username}}</a></li>
+		 <ul class="list-group list-group-flush users-list">
+			{% for art in user %}
+			<li class="list-group-item"><a href='{{url_for("profile", username=art.username)}}'>{{art.username}}</a></li>
 			{% endfor %}
 		</ul>
 	</div>

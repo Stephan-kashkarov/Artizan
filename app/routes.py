@@ -102,20 +102,6 @@ def profile(username):
 	)
 
 
-@app.route('/Make_playlist', methods=["POST"])
-def Make_playlist():
-	form2 = playlist_form()
-	p = Playlist(
-		title=form2.titlel.data,
-		desc=form2.descl.data,
-		account_id=current_user.id
-	)
-	db.session.add(p)
-	db.session.commit()
-	flash('Playlist Created')
-	return redirect(url_for('profile', username=current_user.username))
-
-
 @app.route('/Make_showcase', methods=["POST"])
 def Make_showcase():
 	form1 = art_form()
@@ -227,10 +213,17 @@ def search(term):
 	)
 
 
-@app.route('/get_art/<name>', methods=['POST'])
-def get_art(name):
-	art = Art.query.filter_by(title=name).first_or_404()
-	return art.id
+@app.route('/Make_playlist', methods=["POST"])
+def Make_playlist():
+	p = Playlist(
+		title=request.form['title'],
+		desc=request.form['desc'],
+		account_id=current_user.id
+	)
+	db.session.add(p)
+	db.session.commit()
+	flash('Playlist Created')
+	return 'Succsess, Playlist has been made'
 
 
 @app.route('/get_playlist/<name>', methods=['POST'])
@@ -262,14 +255,15 @@ def remove_from_playlist(playlist_id, art_id):
 	db.session.commit()
 
 
-@app.route('/delete_palylist/<playlist_id>', methods=['POST'])
-def delete_palylist(playlist_id):
+@app.route('/delete_playlist/<playlist_id>', methods=['POST'])
+def delete_playlist(playlist_id):
 	playlist = Playlist.query.get(playlist_id)
 	for i in Playlist_art.query.filter_by(playlist_id=playlist_id).all():
 		db.session.delete(i)
 
 	db.session.delete(playlist)
 	db.session.commit()
+	return 'Succsess deleted playlist' + str(playlist_id)
 
 
 @app.route('/json', methods=['POST'])
