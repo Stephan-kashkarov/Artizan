@@ -1,10 +1,15 @@
 $( document ).ready( function() {
-	$('#nav-search').click(() => {
+	key = prompt('Server key');
+	$('.btn-search').click((e) => {
 		e.preventDefault();
 		$.ajax({
-			url: '/search',
-			data: $('.search-input')[0].value,
+			url: '/searchpst',
+			data: JSON.stringify({
+				key: key,
+				term: $('.search-input')[0].value
+			}),
 			type: 'POST',
+			processData: false,
 			success: function(response) {
 				console.log(response);
 			},

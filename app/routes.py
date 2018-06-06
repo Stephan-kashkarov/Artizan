@@ -1,4 +1,4 @@
-from app import app, db
+from app import app, db, login
 from app.models import Person, Artist, Art, Playlist, Playlist_art
 from app.forms import (
 	login_form,
@@ -15,6 +15,11 @@ from json import loads
 from random import randint
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
+
+
+@login.user_loader
+def load_user(id):
+	return Person.query.get(int(id))
 
 
 @app.before_request
@@ -184,30 +189,24 @@ def about():
 	return render_template('about.html')
 
 
-@app.route('/search', methods=['GET', 'POST'])
-def search():
+@app.route('/searchpst', methods=['POST'])
+def searchpst():
 	if request.method == 'POST':
-		print(dir(request))
-		print(request.get_data)
-		print(request.data)
 		print(request.form)
-		search_term = request.form
-		users = Person.query.filter(Person.username.like(search_term)).all()
-		arts = Art.query.filter(Art.title.like(search_term)).all()
-		artists = Artist.query.filter(Artist.name.like(search_term)).all()
-		return render_template(
-			'search.html',
-			users=users,
-			arts=arts,
-			artists=artists
-		)
-	else:
-		return render_template(
-			'search.html',
-			users=users,
-			arts=arts,
-			artists=artists
-		)
+		return 'YES'
+
+
+@app.route('/search/<term>')
+def search(term):
+	users = Person.query.filter_by(Person.username.like("%" + term + "%")).all()
+	arts = Art.query.filter_by(Art.title.like("%" + term + "%")).all()
+	artists = Artist.query.filter_by(Artist.name.like("%" + term + "%")).all()
+	return render_template(
+		'search.html',
+		user=users,
+		arts=arts,
+		artists=artists
+	)
 
 
 @app.route('/json', methods=['POST'])

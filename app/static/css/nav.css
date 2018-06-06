@@ -9,3 +9,7 @@ ul {
 .hidden {
 	display: none;
 }
+
+.search-input {
+	width: 300px;
+}
