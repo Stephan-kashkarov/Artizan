@@ -41,7 +41,7 @@ def welcome():
 def login():
 	form = login_form()
 	if form.validate_on_submit():
-		person = Person.query.filter_by(username=form.username.data).first()
+		person = Person.query.filter_by(username=form.username.data).first_or_404()
 		if person and person.check_password(form.password.data):
 			login_user(person, remember=form.remember_me.data)
 			return redirect(url_for('browse'))
@@ -74,7 +74,7 @@ def logout():
 
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def profile(username):
-	user = Person.query.filter_by(username=username).first()
+	user = Person.query.filter_by(username=username).first_or_404()
 	if not user:
 		return '404'
 	form = profile_form()
@@ -227,12 +227,23 @@ def search(term):
 	)
 
 
+@app.route('/add_to_playlist/<playlist_id>/<art_id>', methods=['POST'])
+def remove_from_playlist(playlist_id, art_id):
+	a = Playlist_art(
+		playlist_id=playlist_id,
+		art_id=art_id
+	)
+
+	db.session.add(a)
+	db.session.commit()
+
+
 @app.route('/remove_from_playlist/<playlist_id>/<art_id>', methods=['POST'])
 def remove_from_playlist(playlist_id, art_id):
 	a = Playlist_art.query.filter_by(
 		playlist_id=playlist_id,
 		art_id=art_id
-	).first()
+	).first_or_404()
 
 	db.session.delete(a)
 	db.session.commit()
@@ -243,6 +254,7 @@ def delete_palylist(playlist_id):
 	playlist = Playlist.query.get(playlist_id)
 	for i in Playlist_art.query.filter_by(playlist_id=playlist_id).all():
 		db.session.delete(i)
+
 	db.session.delete(playlist)
 	db.session.commit()
 
@@ -261,7 +273,7 @@ def json():
 				timeframe=i['timeframe']
 			)
 			db.session.add(u)
-			u = Artist.query.filter_by(name=i['name']).first()
+			u = Artist.query.filter_by(name=i['name']).first_or_404()
 			for j in i['art']:
 				a = Art(
 					title=j['title'],

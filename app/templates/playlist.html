@@ -6,7 +6,12 @@
 		<h1 class="jumbotron-heading">{{playlist.title}}</h1>
 		<p class="lead text-muted">{{playlist.desc}}</p>
 		<p>
-			<a href="#" class="btn btn-danger my-2">Delete</a>
+			<a href="#" class="delete btn btn-danger my-2">Delete</a>
+			<div class="data" style="display:none;">
+				<p class="playlist_id">
+					{{playlist.id}}
+				</p>
+			</div>
 		</p>
 	</div>
 </section>
@@ -24,6 +29,14 @@
 					<div class="btn-group">
 						<button type="button" class="view btn btn-sm btn-outline-secondary">View</button>
 						<button type="button" class="remove btn btn-sm btn-outline-danger">Remove</button>
+						<div class="data" style="display:none;">
+							<p class="playlist_id">
+								{{playlist.id}}
+							</p>
+							<p class="art_id">
+								{{track.id}}
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
