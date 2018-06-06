@@ -189,23 +189,29 @@ def about():
 	return render_template('about.html')
 
 
-@app.route('/searchpst', methods=['POST'])
-def searchpst():
-	if request.method == 'POST':
-		print(request.form)
-		return 'YES'
-
-
 @app.route('/search/<term>')
 def search(term):
-	users = Person.query.filter_by(Person.username.like("%" + term + "%")).all()
-	arts = Art.query.filter_by(Art.title.like("%" + term + "%")).all()
-	artists = Artist.query.filter_by(Artist.name.like("%" + term + "%")).all()
+	users = db.session.query(Person).filter(
+		Person.username.like("%" + str(term) + "%")
+	).order_by(Person.username.asc()).all()
+	arts = db.session.query(Art).filter(
+		Art.title.like("%" + str(term) + "%")
+	).order_by(Art.title.asc()).all()
+	artists = db.session.query(Artist).filter(
+		Artist.name.like("%" + str(term) + "%")
+	).order_by(Artist.name.asc()).all()
+	print('-' * 18 + 'Search results' + '-' * 18)
+	print('the search term:', term)
+	print('Contents of users:', users)
+	print('Contents of artists:', artists)
+	print('Contents of art:', art)
+	print('-' * 50)
 	return render_template(
 		'search.html',
 		user=users,
 		arts=arts,
-		artists=artists
+		artists=artists,
+		term=term
 	)
 
 

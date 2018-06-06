@@ -1,53 +1,41 @@
 {% extends 'main.html' %}
 
 {% block main %}
-<h1 style="text-align: center;">Your search</h1>
-<form class="form-inline" action="{{ url_for('search')}}" style="text-align: center;">
-	<input class="form-control mr-sm-2 search-input" type="search" placeholder="Search!" name="search" id="search" style="text-align: center;">
-	<button class="btn btn-search my-2 my-sm-0" id='nav-search'>
-		<img src="{{url_for('.static', filename='imgs/search.svg')}}">
-	</button>
-</form>
+<h1 style="text-align: center;">Your search: {{Term}}</h1>
 <div class="arts">
 	<div class="card">
 	<div class="card-header">
 	  Art
 	</div>
-	{% if arts %}
 	 <ul class="list-group list-group-flush">
 		{% for art in arts %}
 		<li class="list-group-item"><a href='{{url_for("art", id=art.id)}}'>{{art.title}}</a></li>
 		{% endfor %}
 	</ul>
   </div>
-	{% endif %}
 </div>
 <div class="artists">
 	<div class="card">
 	<div class="card-header">
 	  Artists
 	</div>
-	{% if artists %}
 	 <ul class="list-group list-group-flush">
 		{% for art in artists %}
 		<li class="list-group-item"><a href='{{url_for("artist", id=art.id)}}'>{{art.name}}</a></li>
 		{% endfor %}
 	</ul>
   </div>
-	{% endif %}
 </div>
 <div class="card">
 <div class="card-header">
   Users
 </div>
-{% if users %}
  <ul class="list-group list-group-flush">
 	{% for art in users %}
 	<li class="list-group-item"><a href='{{url_for("user", username=art.username)}}'>{{art.username}}</a></li>
 	{% endfor %}
 </ul>
 </div>
-{% endif %}
 {% endblock %}
 
 {% block localScripts %}
