@@ -183,11 +183,6 @@ def playlist(id):
 	)
 
 
-@app.route('/about')
-def about():
-	return render_template('about.html')
-
-
 @app.route('/search/<term>')
 def search(term):
 	users = db.session.query(Person).filter(
