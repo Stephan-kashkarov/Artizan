@@ -17,11 +17,13 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 
 
+# user loader
 @login.user_loader
 def load_user(id):
 	return Person.query.get(int(id))
 
 
+# last seen tracker
 @app.before_request
 def before_request():
 	if current_user.is_authenticated:
@@ -29,6 +31,7 @@ def before_request():
 		db.session.commit()
 
 
+# home route
 @app.route("/")
 def welcome():
 	if current_user.is_anonymous:
@@ -37,6 +40,7 @@ def welcome():
 		return redirect(url_for('profile', username=current_user.username))
 
 
+# Login route
 @app.route('/login', methods=["POST", "GET"])
 def login():
 	form = login_form()
@@ -52,6 +56,7 @@ def login():
 	return render_template('login.html', form=form)
 
 
+# regester route
 @app.route('/register', methods=["POST", "GET"])
 def register():
 	form = regist_form()

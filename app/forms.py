@@ -36,6 +36,10 @@ class regist_form(FlaskForm):
 		if user is not None:
 			raise ValidationError('Email already taken')
 
+	def validate_password(self, password):
+		if len(password) < 8:
+			raise ValidationError('Password too short')
+
 
 class profile_form(FlaskForm):
 	password = PasswordField('Password:', validators=[DataRequired()])
