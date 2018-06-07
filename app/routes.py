@@ -215,9 +215,11 @@ def search(term):
 
 @app.route('/Make_playlist', methods=["POST"])
 def Make_playlist():
+	data = request.data.decode("utf-8")
+	data = loads(data)
 	p = Playlist(
-		title=request.form['title'],
-		desc=request.form['desc'],
+		title=data['title'],
+		desc=data['desc'],
 		account_id=current_user.id
 	)
 	db.session.add(p)

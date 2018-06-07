@@ -11,7 +11,6 @@
 			<strong>Location:</strong> {{artwork.location}}
 		</p>
 		<p class='art_id' style="display:none;">{{artwork.id}}</p>
-		{% if playlists %}
 		<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			 + Add to playlist
 		</button>
@@ -19,13 +18,14 @@
 			{% for item in playlists %}
 			<a class="dropdown-item {{item.title}}" href=''>{{item.title}}</a>
 			{% endfor %}
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item addplaylist" onclick="" href="">+-New-Playlist</a>
 		</div>
 		<div class="data" style="display:none;">
 			{% for item in playlists %}
-			<a class="{{item.title}}">{{item.id}}</a>
+			<a class=" dropdown-item {{item.title}}">{{item.id}}</a>
 			{% endfor %}
 		</div>
-		{% endif %}
 	</div>
 </div>
 {% endblock %}
