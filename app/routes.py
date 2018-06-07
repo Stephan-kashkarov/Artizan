@@ -171,7 +171,7 @@ def playlist(id):
 	track_ids = Playlist_art.query.filter_by(playlist_id=playlist.id).all()
 	tracks = []
 	for i in track_ids:
-		i.append(
+		tracks.append(
 			Art.query.get(i)
 		)
 	print(tracks)
@@ -215,8 +215,8 @@ def search(term):
 
 @app.route('/Make_playlist', methods=["POST"])
 def Make_playlist():
-	data = request.data.decode("utf-8")
-	data = loads(data)
+	data = request.json
+	print(data)
 	p = Playlist(
 		title=data['title'],
 		desc=data['desc'],
@@ -225,13 +225,13 @@ def Make_playlist():
 	db.session.add(p)
 	db.session.commit()
 	flash('Playlist Created')
-	return 'Succsess, Playlist has been made'
+	return str(p.id)
 
 
 @app.route('/get_playlist/<name>', methods=['POST'])
 def get_playlist(name):
 	playlist = Playlist.query.filter_by(title=name).first_or_404()
-	return playlist.id
+	return str(playlist.id)
 
 
 @app.route('/add_to_playlist/<playlist_id>/<art_id>', methods=['POST'])
@@ -243,7 +243,7 @@ def add_to_playlist(playlist_id, art_id):
 
 	db.session.add(a)
 	db.session.commit()
-	flash('Added to playlist')
+	return 'Succsess'
 
 
 @app.route('/remove_from_playlist/<playlist_id>/<art_id>', methods=['POST'])
@@ -255,6 +255,7 @@ def remove_from_playlist(playlist_id, art_id):
 
 	db.session.delete(a)
 	db.session.commit()
+	return 'Removed' + str(art_id) + 'from' + str(playlist_id)
 
 
 @app.route('/delete_playlist/<playlist_id>', methods=['POST'])

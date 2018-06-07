@@ -19,7 +19,7 @@
 			<a class="dropdown-item {{item.title}}" href=''>{{item.title}}</a>
 			{% endfor %}
 			<div class="dropdown-divider"></div>
-			<a class="dropdown-item addplaylist" onclick="" href="">+-New-Playlist</a>
+			<a class="dropdown-item" href="">+ New Playlist</a>
 		</div>
 		<div class="data" style="display:none;">
 			{% for item in playlists %}
@@ -32,8 +32,4 @@
 
 {% block localScripts %}
 <script src="{{url_for('static', filename='js/art.js')}}" charset="utf-8"></script>
-{% endblock %}
-
-{% block lstyles %}
-<link rel="stylesheet" href="{{url_for('static', filename='css/art.css')}}">
 {% endblock %}

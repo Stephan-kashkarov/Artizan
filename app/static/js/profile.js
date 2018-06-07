@@ -37,13 +37,13 @@ $( document ).ready( function() {
 		$.ajax({
 			method: 'POST',
 			url: '/delete_playlist/' + playlist_id,
-			succsess: (response) => {
+			sucssess: (response) => {
 				console.log(response);
-				window.location.reload();
 			},
 			error: (error) => {
 				console.log(error);
 			}
 		});
+		window.location.reload();
 	});
 });
