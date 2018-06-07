@@ -1,18 +1,19 @@
 $(document).ready(function() {
-	$('.remove').click( (e) => {
-		p_id = $(this).siblings('.data').children('playlist_id').text();
-		a_id = $(this).siblings('.data').children('art_id').text();
+	$('.remove').click(function(e) {
+		p_id = $(this).parent().children('.data').children('.playlist_id').text().strip();
+		a_id = $(this).parent().children('.data').children('.art_id').text().strip();
 		$.ajax({
 			method: 'post',
 			url: '/remove_from_playlist/' + p_id + '/' + a_id
 		});
 	});
-	$('.delete').click( (e) => {
-		p_id = $(this).siblings('.data').children('playlist_id').text();
+	$('.delete').click(function(e) {
+		p_id = $(this).parent()[0].className;
+		console.log($(this).parent());
 		$.ajax({
 			method: 'post',
 			url: '/delete_playlist/' + p_id,
-			succsess: () => {
+			success: () => {
 				window.location.href='/browse';
 			}
 		});

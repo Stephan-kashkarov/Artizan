@@ -169,10 +169,11 @@ def art(id):
 def playlist(id):
 	playlist = Playlist.query.get(id)
 	track_ids = Playlist_art.query.filter_by(playlist_id=playlist.id).all()
+	print(track_ids)
 	tracks = []
 	for i in track_ids:
 		tracks.append(
-			Art.query.get(i)
+			Art.query.filter_by(id=i.art_id).first()
 		)
 	print(tracks)
 	return render_template(

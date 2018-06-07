@@ -5,13 +5,8 @@
 	<div class="container">
 		<h1 class="jumbotron-heading">{{playlist.title}}</h1>
 		<p class="lead text-muted">{{playlist.desc}}</p>
-		<p>
+		<p class='{{playlist.id}}'>
 			<a href="#" class="delete btn btn-danger my-2">Delete</a>
-			<div class="data" style="display:none;">
-				<p class="playlist_id">
-					{{playlist.id}}
-				</p>
-			</div>
 		</p>
 	</div>
 </section>
@@ -20,23 +15,21 @@
 	<div class="container">
 		{% for track in tracks %}
 		<div class="row">
-			<div class="col-md-4">
-				<div class="card mb-4 box-shadow">
-				<img class="card-img-top" src="{{ url_for('static', filename=track.img_url) }}" alt="Card image cap">
-				<div class="card-body">
-					<p class="card-text"><strong>Title:</strong> {{track.title}}<br><strong>Date:</strong> {{artwork.date}}<br><strong>Technique:</strong> {{artwork.technique}}<br><strong>Location:</strong> {{artwork.location}}</p>
-				<div class="d-flex justify-content-between align-items-center">
-					<div class="btn-group">
-						<button type="button" class="view btn btn-sm btn-outline-secondary">View</button>
-						<button type="button" class="remove btn btn-sm btn-outline-danger">Remove</button>
-						<div class="data" style="display:none;">
-							<p class="playlist_id">
-								{{playlist.id}}
-							</p>
-							<p class="art_id">
-								{{track.id}}
-							</p>
-						</div>
+			<div class="card mb-4 box-shadow">
+			<img class="card-img-top" src="{{ url_for('static', filename=track.img_url) }}" alt="Card image cap">
+			<div class="card-body">
+				<p class="card-text"><strong>Title:</strong> {{track.title}}<br><strong>Date:</strong> {{track.date}}<br><strong>Technique:</strong> {{track.technique}}<br><strong>Location:</strong> {{track.location}}</p>
+			<div class="d-flex justify-content-between align-items-center">
+				<div class="btn-group">
+					<button type="button" class="view btn btn-sm btn-outline-secondary">View</button>
+					<button type="button" class="remove btn btn-sm btn-outline-danger">Remove</button>
+					<div class="data" style="display:none;">
+						<p class="playlist_id">
+							{{playlist.id}}
+						</p>
+						<p class="art_id">
+							{{track.id}}
+						</p>
 					</div>
 				</div>
 			</div>
