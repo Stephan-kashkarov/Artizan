@@ -5,8 +5,7 @@ from app.forms import (
 	login_form,
 	regist_form,
 	profile_form,
-	art_form,
-	playlist_form
+	art_form
 )
 from datetime import datetime
 from flask import render_template, redirect, url_for, flash, request
@@ -14,7 +13,6 @@ from flask_login import current_user, login_user, login_required, logout_user
 from flask_uploads import UploadSet, IMAGES
 from json import loads
 from random import randint
-from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 
 
@@ -88,7 +86,6 @@ def profile(username):
 	if not user:
 		return '404'
 	form = profile_form()
-	form2 = playlist_form()
 	form1 = art_form()
 	showcases = Art.query.filter_by(user_id=user.id).all()
 	playlist = Playlist.query.filter_by(account_id=user.id).all()
@@ -107,8 +104,7 @@ def profile(username):
 		showcases=showcases,
 		playlists=playlist,
 		form=form,
-		form1=form1,
-		form2=form2
+		form1=form1
 	)
 
 
