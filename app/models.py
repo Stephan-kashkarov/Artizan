@@ -1,3 +1,4 @@
+"""Definition of the internals of the database."""
 from app import db, login
 from datetime import datetime
 from flask_login import UserMixin
@@ -7,10 +8,13 @@ import hashlib
 
 @login.user_loader
 def load_user(id):
+	"""User loader for flask login"""
 	return Person.query.get(int(id))
 
 
 class Person(UserMixin, db.Model):
+	"""User table - renamed to Person to avoid sql injection attacks."""
+
 	__tablename__ = 'person'
 
 	id = db.Column(db.Integer, primary_key=True)
@@ -24,15 +28,19 @@ class Person(UserMixin, db.Model):
 	playlist = db.relationship('Playlist', backref='account', lazy='dynamic')
 
 	def __repr__(self):
+		"""tells the class how to reperesnt itself"""
 		return '<User {}>'.format(self.username)
 
 	def set_password(self, password):
+		"""runs the passwords through a hash and appends"""
 		self.password_hash = generate_password_hash(str(password))
 
 	def check_password(self, password):
+		"""Checks a password against the hash"""
 		return check_password_hash(self.password_hash, password)
 
 	def avatar(self, size):
+		"""returns avatar of user"""
 		digest = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
 		self.profile_pic = \
 			'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
@@ -42,6 +50,8 @@ class Person(UserMixin, db.Model):
 
 
 class Art(db.Model):
+	"""Art table - Contains an artwork."""
+
 	__tablename__ = 'art'
 
 	id = db.Column(db.Integer, primary_key=True)
@@ -58,10 +68,13 @@ class Art(db.Model):
 	playlists = db.relationship('Playlist_art', backref='art', lazy='dynamic')
 
 	def __repr__(self):
+		"""tells the class how to reperesnt itself"""
 		return '<{} - Art>'.format(self.title)
 
 
 class Artist(db.Model):
+	"""Artist table - Contains an artist."""
+
 	__tablename__ = 'artist'
 
 	id = db.Column(db.Integer, primary_key=True)
@@ -72,10 +85,13 @@ class Artist(db.Model):
 	art = db.relationship('Art', backref='artist', lazy='dynamic')
 
 	def __repr__(self):
+		"""tells the class how to reperesnt itself"""
 		return '<Artist {}>'.format(self.name)
 
 
 class Playlist(db.Model):
+	"""Playlist table - containst a playlist."""
+
 	__tablename__ = 'playlist'
 
 	id = db.Column(db.Integer, primary_key=True)
@@ -86,6 +102,8 @@ class Playlist(db.Model):
 
 
 class Playlist_art(db.Model):
+	"""Link table between playlist and art"""
+
 	__tablename__ = 'playlist_art'
 
 	playlist_id = db.Column(

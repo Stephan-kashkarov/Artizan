@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('.remove').click(function(e) {
-		p_id = $(this).parent().children('.data').children('.playlist_id').text().strip();
-		a_id = $(this).parent().children('.data').children('.art_id').text().strip();
+		p_id = $(this).parent().children('.data').children('.playlist_id').text();
+		a_id = $(this).parent().children('.data').children('.art_id').text();
 		$.ajax({
 			method: 'post',
 			url: '/remove_from_playlist/' + p_id + '/' + a_id
@@ -17,5 +17,9 @@ $(document).ready(function() {
 				window.location.href='/browse';
 			}
 		});
+	});
+	$('.view').click(function(e){
+		a_id = $(this).parent().children('.data').children('.art_id').text();
+		window.location.href = '/browse/art/' + a_id;
 	});
 });

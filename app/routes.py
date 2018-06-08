@@ -1,3 +1,4 @@
+"""The routing for my webiste."""
 from app import app, db, login
 from app.models import Person, Artist, Art, Playlist, Playlist_art
 from app.forms import (
@@ -17,32 +18,33 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 
 
-# user loader
 @login.user_loader
 def load_user(id):
+	"""User loader for flask login."""
 	return Person.query.get(int(id))
 
 
-# last seen tracker
 @app.before_request
 def before_request():
+	"""Tacker for the last request if user is authed."""
 	if current_user.is_authenticated:
 		current_user.last_seen = datetime.utcnow()
 		db.session.commit()
 
 
-# home route
 @app.route("/")
 def welcome():
+	"""Welcome page."""
 	if current_user.is_anonymous:
-		return render_template('index.html')
+		return render_template('index.html')  # Go to logon page
 	else:
 		return redirect(url_for('profile', username=current_user.username))
+		# GO to profle page
 
 
-# Login route
 @app.route('/login', methods=["POST", "GET"])
 def login():
+	"""Logon route for webite."""
 	form = login_form()
 	if form.validate_on_submit():
 		person = Person.query.filter_by(username=form.username.data).first_or_404()
@@ -59,6 +61,7 @@ def login():
 # regester route
 @app.route('/register', methods=["POST", "GET"])
 def register():
+	"""Regiser route for website."""
 	form = regist_form()
 	if form.validate_on_submit():
 		user = Person(username=form.username.data, email=form.email.data)
@@ -73,12 +76,14 @@ def register():
 @app.route('/logout')
 @login_required
 def logout():
+	"""Logout route."""
 	logout_user()
 	return redirect(url_for('welcome'))
 
 
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def profile(username):
+	"""Profile page route."""
 	user = Person.query.filter_by(username=username).first_or_404()
 	if not user:
 		return '404'
@@ -107,6 +112,94 @@ def profile(username):
 	)
 
 
+@app.route('/browse')
+def browse():
+	"""Main page."""
+	spotlight = Artist.query.get(randint(1, db.session.query(Artist).count() - 1))
+	spotlight_list = Art.query.filter_by(artist_id=spotlight.id).all()[:5]
+	return render_template(
+		'browse.html',
+		spotlight=spotlight,
+		spotlight_list=spotlight_list
+	)
+
+
+@app.route('/browse/artist/<id>')
+def artist(id):
+	"""Artist page route."""
+	artist = Artist.query.get(id)
+	showcases = Art.query.filter_by(artist_id=artist.id).all()
+	return render_template(
+		'artist.html',
+		artist=artist,
+		showcases=showcases
+	)
+
+
+@app.route('/browse/art/<id>')
+def art(id):
+	"""Art page route."""
+	if current_user.is_authenticated:
+		playlists = Playlist.query.filter_by(account_id=current_user.id).all()
+	else:
+		playlists = None
+	return render_template(
+		'art.html',
+		artwork=Art.query.get(id),
+		playlists=playlists
+	)
+
+
+@app.route('/browse/playlist/<id>')
+def playlist(id):
+	"""Playlist page route."""
+	playlist = Playlist.query.get(id)
+	track_ids = Playlist_art.query.filter_by(playlist_id=playlist.id).all()
+	print(track_ids)
+	tracks = []
+	for i in track_ids:
+		tracks.append(
+			Art.query.filter_by(id=i.art_id).first()
+		)
+	print(tracks)
+	return render_template(
+		'playlist.html',
+		playlist=playlist,
+		tracks=tracks
+	)
+
+
+@app.route('/search/<term>')
+def search(term):
+	"""Search page route."""
+	users = db.session.query(Person).filter(
+		Person.username.like("%" + str(term) + "%")
+	).order_by(Person.username.asc()).all()
+	arts = db.session.query(Art).filter(
+		Art.title.like("%" + str(term) + "%")
+	).order_by(Art.title.asc()).all()
+	artists = db.session.query(Artist).filter(
+		Artist.name.like("%" + str(term) + "%")
+	).order_by(Artist.name.asc()).all()
+	print('-' * 18 + 'Search results' + '-' * 18)
+	print('the search term:', term)
+	print('Contents of users:', users)
+	print('Contents of artists:', artists)
+	print('Contents of art:', art)
+	print('-' * 50)
+	return render_template(
+		'search.html',
+		user=users,
+		arts=arts,
+		artists=artists,
+		term=term
+	)
+"""
+END OF USER EXPERIENCE ROUTES
+HERE ON IS DATABASE MANAGEMENT ROUTES
+"""
+
+
 @app.route('/Make_showcase', methods=["POST"])
 def Make_showcase():
 	form1 = art_form()
@@ -133,85 +226,6 @@ def Make_showcase():
 	else:
 		flash("img dosent exist")
 	return redirect(url_for('profile', username=current_user.username))
-
-
-@app.route('/browse')
-def browse():
-	spotlight = Artist.query.get(randint(1, db.session.query(Artist).count() - 1))
-	spotlight_list = Art.query.filter_by(artist_id=spotlight.id).all()[:5]
-	return render_template(
-		'browse.html',
-		spotlight=spotlight,
-		spotlight_list=spotlight_list
-	)
-
-
-@app.route('/browse/artist/<id>')
-def artist(id):
-	artist = Artist.query.get(id)
-	showcases = Art.query.filter_by(artist_id=artist.id).all()
-	return render_template(
-		'artist.html',
-		artist=artist,
-		showcases=showcases
-	)
-
-
-@app.route('/browse/art/<id>')
-def art(id):
-	if current_user.is_authenticated:
-		playlists = Playlist.query.filter_by(account_id=current_user.id).all()
-	else:
-		playlists = None
-	return render_template(
-		'art.html',
-		artwork=Art.query.get(id),
-		playlists=playlists
-	)
-
-
-@app.route('/browse/playlist/<id>')
-def playlist(id):
-	playlist = Playlist.query.get(id)
-	track_ids = Playlist_art.query.filter_by(playlist_id=playlist.id).all()
-	print(track_ids)
-	tracks = []
-	for i in track_ids:
-		tracks.append(
-			Art.query.filter_by(id=i.art_id).first()
-		)
-	print(tracks)
-	return render_template(
-		'playlist.html',
-		playlist=playlist,
-		tracks=tracks
-	)
-
-
-@app.route('/search/<term>')
-def search(term):
-	users = db.session.query(Person).filter(
-		Person.username.like("%" + str(term) + "%")
-	).order_by(Person.username.asc()).all()
-	arts = db.session.query(Art).filter(
-		Art.title.like("%" + str(term) + "%")
-	).order_by(Art.title.asc()).all()
-	artists = db.session.query(Artist).filter(
-		Artist.name.like("%" + str(term) + "%")
-	).order_by(Artist.name.asc()).all()
-	print('-' * 18 + 'Search results' + '-' * 18)
-	print('the search term:', term)
-	print('Contents of users:', users)
-	print('Contents of artists:', artists)
-	print('Contents of art:', art)
-	print('-' * 50)
-	return render_template(
-		'search.html',
-		user=users,
-		arts=arts,
-		artists=artists,
-		term=term
-	)
 
 
 @app.route('/Make_playlist', methods=["POST"])
@@ -272,6 +286,7 @@ def delete_playlist(playlist_id):
 
 @app.route('/json', methods=['POST'])
 def json():
+	""""Method for inital importation of data."""
 	data = request.data.decode("utf-8")
 	data = loads(data)
 	if data['key'] == app.config['SECRET_KEY']:

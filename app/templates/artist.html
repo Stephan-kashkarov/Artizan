@@ -22,18 +22,6 @@
 			<strong>Technique:</strong> {{artwork.technique}}<br>
 			<strong>Location:</strong> {{artwork.location}}
 		</p>
-		<div class="btn-group dropup">
-			<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				+ Playlist
-			</button>
-			<div class="dropdown-menu imgs">
-			{% for playlist in playlists %}
-			<a class="dropdown-item chooseplaylist" href="">{{playlist.name}}</a>
-			{% endfor %}
-			<div class="dropdown-divider"></div>
-			<a class="dropdown-item addplaylist" href="">+ New Playlist</a>
-			</div>
-		</div>
 		<p class="card-text">
 			<small class="text-muted"><a href="{{url_for('art', id=artwork.id)}}">view</a></small>
 		</p>
