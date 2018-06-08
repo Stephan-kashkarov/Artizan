@@ -1,12 +1,14 @@
 """The initialization file for the whole program.
-	To run the server:
-	- go to terminal
-	- navigate to the parent folder of this file
-	- do the command set FLASK_APP=runserver.py
-	- do the command flask run
-	- go to 127.0.0.1:5000 in Chrome(preferbly)
-	- enjoy
+
+To run the server:
+- go to terminal
+- navigate to the parent folder of this file
+- do the command set FLASK_APP=runserver.py
+- do the command flask run
+- go to 127.0.0.1:5000 in Chrome(preferbly)
+- enjoy
 """
+
 from app import app, db
 from app.models import Person, Artist, Art, Playlist, Playlist_art
 
