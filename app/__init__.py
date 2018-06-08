@@ -8,7 +8,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_uploads import (
 	configure_uploads,
 	patch_request_class,
-	IMAGES, UploadSet
+	IMAGES,
+	UploadSet
 )
 
 """Creates an instance of Flask app and
